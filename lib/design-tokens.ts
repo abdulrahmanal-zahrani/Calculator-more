@@ -1,5 +1,5 @@
 /**
- * Centralized design tokens for Hesabi.
+ * Centralized design tokens for MIHSAB.
  * The actual CSS custom properties live in app/globals.css (light + dark).
  * This file exposes the same scale to TypeScript/JS consumers (e.g. charts,
  * inline style calculations) so values never drift out of sync conceptually.
@@ -42,11 +42,11 @@ export const spacing = {
 
 export const brand = {
   name: {
-    ar: "حسابي",
-    en: "Hesabi",
+    ar: "المِحساب",
+    en: "MIHSAB",
   },
   tagline: {
-    ar: "حساباتك اليومية... بكل بساطة.",
-    en: "Everyday calculations, made simple.",
+    ar: "احسبها... صح.",
+    en: "Calculate it right.",
   },
 } as const;

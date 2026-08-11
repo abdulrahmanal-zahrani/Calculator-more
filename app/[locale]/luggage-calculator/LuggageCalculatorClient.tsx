@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -26,14 +27,14 @@ const COPY = {
     over: "زيادة عن الوزن المسموح",
     overNote: "وزن حقائبك يتجاوز الحد المسموح — قد تُحمّل رسوم زيادة وزن.",
     okNote: "وزن حقائبك ضمن الحد المسموح.",
-    airlineNote: "أوزان الأمتعة المسموح بها تختلف بين شركات الطيران والدرجات — تأكد دائمًا من سياسة شركتك قبل السفر.",
+    airlineNote: "أوزان الأمتعة المسموح بها تختلف بين شركات الطيران والدرجات — تأكد دائماً من سياسة شركتك قبل السفر.",
     home: "الرئيسية",
     category: "السفر",
     howItWorks: [
       "نجمع وزن كل الحقائب المدخلة.",
       "نقارن الإجمالي بالوزن المسموح به لنوضح المتبقي أو الزيادة.",
     ],
-    disclaimer: "هذه الحاسبة عامة ولا تمثل سياسة أي شركة طيران محددة — راجع دائمًا حدود الوزن الرسمية لشركتك.",
+    disclaimer: "هذه الحاسبة عامة ولا تمثل سياسة أي شركة طيران محددة — راجع دائماً حدود الوزن الرسمية لشركتك.",
     faq: [{ question: "هل الأرقام هنا رسمية؟", answer: "لا، هذه أداة عامة — تحقق من الحدود الرسمية لشركة طيرانك." }],
   },
   en: {
@@ -72,7 +73,7 @@ export default function LuggageCalculatorClient({ locale }: { locale: Locale }) 
   }
 
   const result = calculateLuggage({
-    allowanceKg: Math.max(0, parseFloat(allowance) || 0),
+    allowanceKg: Math.max(0, (normalizeNumericInput(allowance) ?? 0)),
     bags: bags.map((b) => ({ ...b, weightKg: Math.max(0, b.weightKg || 0) })),
   });
 
@@ -102,7 +103,7 @@ export default function LuggageCalculatorClient({ locale }: { locale: Locale }) 
                 <Input label={c.bag} value={b.name} onChange={(e) => update(i, { name: e.target.value })} />
               </div>
               <div className="flex-1">
-                <Input label={c.weight} type="number" min={0} inputMode="decimal" value={b.weightKg} onChange={(e) => update(i, { weightKg: parseFloat(e.target.value) || 0 })} />
+                <Input label={c.weight} type="number" min={0} inputMode="decimal" value={b.weightKg} onChange={(e) => update(i, { weightKg: (normalizeNumericInput(e.target.value) ?? 0) })} />
               </div>
               {bags.length > 1 && (
                 <Button variant="ghost" size="sm" onClick={() => setBags((prev) => prev.filter((_, idx) => idx !== i))}>

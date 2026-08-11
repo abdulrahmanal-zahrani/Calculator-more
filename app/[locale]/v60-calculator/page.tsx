@@ -9,10 +9,10 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-const TITLE = { ar: "حاسبة V60", en: "V60 Coffee Calculator" };
+const TITLE = { ar: "حاسبة القهوة / V60", en: "Coffee / V60 Calculator" };
 const DESCRIPTION = {
-  ar: "احسب النسبة المثالية بين القهوة والماء لطريقة V60 مع جدول صب خطوة بخطوة.",
-  en: "Calculate the perfect coffee-to-water ratio for V60 pour-over, with a step-by-step pour schedule.",
+  ar: "احسب النسبة المثالية بين القهوة والماء لأي طريقة تحضير — V60، فرنش برس، إيروبرس، كيمكس، وكولد برو — مع جدول صب خطوة بخطوة.",
+  en: "Calculate the perfect coffee-to-water ratio for any brew method — V60, French Press, AeroPress, Chemex, or Cold Brew — with a step-by-step pour schedule.",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     path: "/v60-calculator",
     title: TITLE[l],
     description: DESCRIPTION[l],
-    ogImageQuery: "coffee=20&preset=balanced",
+    ogImageQuery: "method=v60&coffee=20&water=320&ratio=16&solveFor=water",
   });
 }
 

@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,17 +17,17 @@ const meta = FLAGSHIP_CALCULATORS.find((c) => c.slug === "fuel-cost-calculator")
 
 const COPY = {
   ar: {
-    intro: "احسب تكلفة الوقود لأي رحلة، شهريًا أو سنويًا، حسب كفاءة استهلاك سيارتك.",
+    intro: "احسب تكلفة الوقود لأي رحلة، شهرياً أو سنوياً، حسب كفاءة استهلاك سيارتك.",
     distance: "المسافة (كم)",
     efficiency: "الاستهلاك (لتر/100كم)",
     fuelType: "نوع الوقود",
     price: "السعر (ريال/لتر)",
-    trips: "عدد الرحلات شهريًا",
+    trips: "عدد الرحلات شهرياً",
     tripCost: "تكلفة الرحلة",
     liters: "اللترات المستهلكة",
     perKm: "التكلفة لكل كم",
-    monthly: "شهريًا",
-    annual: "سنويًا",
+    monthly: "شهرياً",
+    annual: "سنوياً",
     home: "الرئيسية",
     category: "السيارات",
     howItWorks: [
@@ -36,7 +37,7 @@ const COPY = {
     ],
     disclaimer: "أسعار الوقود تقريبية لأغراض العرض وقد تختلف عن السعر الفعلي عند المحطة.",
     faq: [
-      { question: "من أين تأتي أسعار الوقود؟", answer: "هذه أسعار إرشادية يمكنك تعديلها يدويًا لتطابق السعر الحالي في منطقتك." },
+      { question: "من أين تأتي أسعار الوقود؟", answer: "هذه أسعار إرشادية يمكنك تعديلها يدوياً لتطابق السعر الحالي في منطقتك." },
     ],
   },
   en: {
@@ -83,10 +84,10 @@ export default function FuelCalculatorClient({ locale }: { locale: Locale }) {
   }
 
   const result = calculateFuelCost({
-    distanceKm: Math.max(0, parseFloat(distance) || 0),
-    efficiencyLPer100Km: Math.max(0, parseFloat(efficiency) || 0),
-    pricePerLiter: Math.max(0, parseFloat(price) || 0),
-    tripsPerMonth: Math.max(0, parseFloat(trips) || 0),
+    distanceKm: Math.max(0, (normalizeNumericInput(distance) ?? 0)),
+    efficiencyLPer100Km: Math.max(0, (normalizeNumericInput(efficiency) ?? 0)),
+    pricePerLiter: Math.max(0, (normalizeNumericInput(price) ?? 0)),
+    tripsPerMonth: Math.max(0, (normalizeNumericInput(trips) ?? 0)),
   });
 
   const shareUrl =

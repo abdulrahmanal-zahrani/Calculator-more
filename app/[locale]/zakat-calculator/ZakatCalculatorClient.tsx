@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -16,6 +17,11 @@ const meta = FLAGSHIP_CALCULATORS.find((c) => c.slug === "zakat-calculator")!;
 const COPY = {
   ar: {
     intro: "احسب زكاة مالك المتراكم: نقد، بنك، ذهب، فضة، استثمارات، وبضائع تجارية — بعد خصم الالتزامات.",
+    categoryChoice: "اختر نوع المال",
+    catGold: "ذهب",
+    catSilver: "فضة",
+    catCash: "نقد",
+    catOther: "أصول أخرى",
     cash: "النقد لديك",
     bank: "أرصدة البنوك",
     goldGrams: "الذهب (جرام)",
@@ -41,14 +47,19 @@ const COPY = {
       "نقارن الناتج بقيمة النصاب (85 جرام ذهب أو 595 جرام فضة، حسب اختيارك).",
       "إذا بلغ المال النصاب وحال عليه الحول (سنة هجرية كاملة)، تكون الزكاة 2.5% من صافي المال الزكوي.",
     ],
-    disclaimer: "هذه الحاسبة تقدّم تقديرًا عامًا وفق قواعد شائعة وليست فتوى شرعية. للحصول على حكم دقيق لحالتك الخاصة، يُرجى استشارة عالم شرعي موثوق أو الجهة الرسمية المختصة بالزكاة في بلدك.",
+    disclaimer: "هذه الحاسبة تقدّم تقديراً عاماً وفق قواعد شائعة وليست فتوى شرعية. للحصول على حكم دقيق لحالتك الخاصة، يُرجى استشارة عالم شرعي موثوق أو الجهة الرسمية المختصة بالزكاة في بلدك.",
     faq: [
       { question: "هل هذه الحاسبة فتوى شرعية؟", answer: "لا، هي أداة تقديرية عامة فقط. استشر جهة شرعية موثوقة لحالتك." },
-      { question: "لماذا يوجد أساس نصاب بالذهب وآخر بالفضة؟", answer: "نصاب الفضة أقل قيمة عادة، فيراه بعض العلماء أكثر احتياطًا وشمولًا لوجوب الزكاة." },
+      { question: "لماذا يوجد أساس نصاب بالذهب وآخر بالفضة؟", answer: "نصاب الفضة أقل قيمة عادة، فيراه بعض العلماء أكثر احتياطاً وشمولاً لوجوب الزكاة." },
     ],
   },
   en: {
     intro: "Calculate zakat on your accumulated wealth: cash, bank, gold, silver, investments, and business inventory — after liabilities.",
+    categoryChoice: "Choose asset type",
+    catGold: "Gold",
+    catSilver: "Silver",
+    catCash: "Cash",
+    catOther: "Other assets",
     cash: "Cash on hand",
     bank: "Bank balances",
     goldGrams: "Gold (grams)",
@@ -96,8 +107,9 @@ export default function ZakatCalculatorClient({ locale }: { locale: Locale }) {
   const [receivables, setReceivables] = useState("0");
   const [liabilities, setLiabilities] = useState("0");
   const [nisabBasis, setNisabBasis] = useState<"gold" | "silver">("gold");
+  const [category, setCategory] = useState<"gold" | "silver" | "cash" | "other">("gold");
 
-  const n = (v: string) => Math.max(0, parseFloat(v) || 0);
+  const n = (v: string) => Math.max(0, (normalizeNumericInput(v) ?? 0));
 
   const result = calculateZakat({
     cash: n(cash),
@@ -132,15 +144,49 @@ export default function ZakatCalculatorClient({ locale }: { locale: Locale }) {
       }}
       calculatorForm={
         <>
-          <Input label={c.cash} type="number" min={0} inputMode="decimal" value={cash} onChange={(e) => setCash(e.target.value)} />
-          <Input label={c.bank} type="number" min={0} inputMode="decimal" value={bank} onChange={(e) => setBank(e.target.value)} />
-          <Input label={c.goldGrams} type="number" min={0} inputMode="decimal" value={goldGrams} onChange={(e) => setGoldGrams(e.target.value)} />
-          <Input label={c.goldPrice} type="number" min={0} inputMode="decimal" value={goldPrice} onChange={(e) => setGoldPrice(e.target.value)} />
-          <Input label={c.silverGrams} type="number" min={0} inputMode="decimal" value={silverGrams} onChange={(e) => setSilverGrams(e.target.value)} />
-          <Input label={c.silverPrice} type="number" min={0} inputMode="decimal" value={silverPrice} onChange={(e) => setSilverPrice(e.target.value)} />
-          <Input label={c.investments} type="number" min={0} inputMode="decimal" value={investments} onChange={(e) => setInvestments(e.target.value)} />
-          <Input label={c.inventory} type="number" min={0} inputMode="decimal" value={inventory} onChange={(e) => setInventory(e.target.value)} />
-          <Input label={c.receivables} type="number" min={0} inputMode="decimal" value={receivables} onChange={(e) => setReceivables(e.target.value)} />
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-text-muted">{c.categoryChoice}</span>
+            <Tabs
+              options={[
+                { value: "gold", label: c.catGold },
+                { value: "silver", label: c.catSilver },
+                { value: "cash", label: c.catCash },
+                { value: "other", label: c.catOther },
+              ]}
+              value={category}
+              onChange={setCategory}
+            />
+          </div>
+
+          {category === "gold" && (
+            <>
+              <Input label={c.goldGrams} type="number" min={0} inputMode="decimal" value={goldGrams} onChange={(e) => setGoldGrams(e.target.value)} />
+              <Input label={c.goldPrice} type="number" min={0} inputMode="decimal" value={goldPrice} onChange={(e) => setGoldPrice(e.target.value)} />
+            </>
+          )}
+
+          {category === "silver" && (
+            <>
+              <Input label={c.silverGrams} type="number" min={0} inputMode="decimal" value={silverGrams} onChange={(e) => setSilverGrams(e.target.value)} />
+              <Input label={c.silverPrice} type="number" min={0} inputMode="decimal" value={silverPrice} onChange={(e) => setSilverPrice(e.target.value)} />
+            </>
+          )}
+
+          {category === "cash" && (
+            <>
+              <Input label={c.cash} type="number" min={0} inputMode="decimal" value={cash} onChange={(e) => setCash(e.target.value)} />
+              <Input label={c.bank} type="number" min={0} inputMode="decimal" value={bank} onChange={(e) => setBank(e.target.value)} />
+            </>
+          )}
+
+          {category === "other" && (
+            <>
+              <Input label={c.investments} type="number" min={0} inputMode="decimal" value={investments} onChange={(e) => setInvestments(e.target.value)} />
+              <Input label={c.inventory} type="number" min={0} inputMode="decimal" value={inventory} onChange={(e) => setInventory(e.target.value)} />
+              <Input label={c.receivables} type="number" min={0} inputMode="decimal" value={receivables} onChange={(e) => setReceivables(e.target.value)} />
+            </>
+          )}
+
           <Input label={c.liabilities} type="number" min={0} inputMode="decimal" value={liabilities} onChange={(e) => setLiabilities(e.target.value)} />
           <div className="flex flex-col gap-1.5">
             <span className="text-sm font-medium text-text-muted">{c.nisabBasis}</span>

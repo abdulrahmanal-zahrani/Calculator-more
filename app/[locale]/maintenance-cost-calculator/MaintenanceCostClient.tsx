@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -23,7 +24,7 @@ const COPY = {
     home: "الرئيسية",
     category: "السيارات",
     howItWorks: [
-      "لكل عنصر صيانة، نحسب عدد مرات الخدمة سنويًا بقسمة المسافة السنوية على الفاصل الزمني.",
+      "لكل عنصر صيانة، نحسب عدد مرات الخدمة سنوياً بقسمة المسافة السنوية على الفاصل الزمني.",
       "نضرب عدد المرات في تكلفة الخدمة الواحدة، ثم نجمع كل العناصر.",
     ],
     disclaimer: "الأرقام الافتراضية تقديرية — عدّلها حسب أسعار الصيانة الفعلية في منطقتك ونوع سيارتك.",
@@ -72,7 +73,7 @@ export default function MaintenanceCostClient({ locale }: { locale: Locale }) {
   }
 
   const result = calculateMaintenanceCost({
-    annualMileageKm: Math.max(0, parseFloat(mileage) || 0),
+    annualMileageKm: Math.max(0, (normalizeNumericInput(mileage) ?? 0)),
     items: items.map((i) => ({ ...i, costPerService: Math.max(0, i.costPerService || 0), intervalKm: Math.max(1, i.intervalKm || 1) })),
   });
 
@@ -101,9 +102,9 @@ export default function MaintenanceCostClient({ locale }: { locale: Locale }) {
               <div className="col-span-3">
                 <Input label={c.item} value={it.name} onChange={(e) => update(i, { name: e.target.value })} />
               </div>
-              <Input label={c.cost} type="number" min={0} inputMode="decimal" value={it.costPerService} onChange={(e) => update(i, { costPerService: parseFloat(e.target.value) || 0 })} />
+              <Input label={c.cost} type="number" min={0} inputMode="decimal" value={it.costPerService} onChange={(e) => update(i, { costPerService: (normalizeNumericInput(e.target.value) ?? 0) })} />
               <div className="col-span-2">
-                <Input label={c.interval} type="number" min={1} inputMode="numeric" value={it.intervalKm} onChange={(e) => update(i, { intervalKm: parseFloat(e.target.value) || 1 })} />
+                <Input label={c.interval} type="number" min={1} inputMode="numeric" value={it.intervalKm} onChange={(e) => update(i, { intervalKm: (normalizeNumericInput(e.target.value) ?? 1) })} />
               </div>
             </div>
           ))}

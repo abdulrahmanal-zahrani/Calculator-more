@@ -73,10 +73,10 @@ export const FLAGSHIP_CALCULATORS: CalculatorMeta[] = [
     slug: "v60-calculator",
     category: "lifestyle",
     icon: "☕",
-    name: { ar: "حاسبة V60", en: "V60 Coffee Calculator" },
+    name: { ar: "حاسبة القهوة / V60", en: "Coffee / V60 Calculator" },
     description: {
-      ar: "نسبة القهوة والماء المثالية مع جدول الصب خطوة بخطوة.",
-      en: "The perfect coffee-to-water ratio, with a step-by-step pour schedule.",
+      ar: "نسبة القهوة والماء المثالية لأي طريقة تحضير، مع جدول الصب خطوة بخطوة.",
+      en: "The perfect coffee-to-water ratio for any brew method, with a step-by-step pour schedule.",
     },
   },
   {
@@ -147,16 +147,6 @@ export const FLAGSHIP_CALCULATORS: CalculatorMeta[] = [
     description: {
       ar: "قدّر تكلفة صيانة سيارتك السنوية حسب المسافة المقطوعة.",
       en: "Estimate your car's annual maintenance cost based on mileage.",
-    },
-  },
-  {
-    slug: "coffee-ratio-calculator",
-    category: "lifestyle",
-    icon: "🫘",
-    name: { ar: "حاسبة نسبة القهوة", en: "Coffee Ratio Calculator" },
-    description: {
-      ar: "نسبة القهوة والماء لطرق تحضير مختلفة: فرنش برس، إيروبرس، كيمكس، وكولد برو.",
-      en: "Coffee-to-water ratios for French Press, AeroPress, Chemex, and Cold Brew.",
     },
   },
   {

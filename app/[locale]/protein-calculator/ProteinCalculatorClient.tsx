@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -17,7 +18,7 @@ const ACTIVITY_LABELS: Record<ActivityLevel, { ar: string; en: string }> = {
   light: { ar: "نشاط خفيف", en: "Light activity" },
   moderate: { ar: "نشاط متوسط", en: "Moderate activity" },
   active: { ar: "نشيط", en: "Active" },
-  veryActive: { ar: "نشيط جدًا", en: "Very active" },
+  veryActive: { ar: "نشيط جداً", en: "Very active" },
 };
 
 const GOAL_LABELS: Record<ProteinGoal, { ar: string; en: string }> = {
@@ -32,8 +33,8 @@ const COPY = {
     weight: "الوزن (كجم)",
     activity: "مستوى النشاط",
     goal: "الهدف",
-    meals: "عدد الوجبات يوميًا",
-    perDay: "البروتين يوميًا",
+    meals: "عدد الوجبات يومياً",
+    perDay: "البروتين يومياً",
     perMeal: "البروتين لكل وجبة",
     home: "الرئيسية",
     category: "نمط الحياة",
@@ -41,7 +42,7 @@ const COPY = {
       "نستخدم مدى جرامات بروتين لكل كيلوجرام من وزن الجسم يعتمد على هدفك (حفاظ، خسارة دهون، أو بناء عضلات).",
       "نقسم إجمالي البروتين اليومي على عدد الوجبات لتوزيع متوازن.",
     ],
-    disclaimer: "تقدير عام وليس استشارة طبية أو غذائية — استشر أخصائي تغذية لحالتك الخاصة، خصوصًا إن كانت لديك حالة كلوية.",
+    disclaimer: "تقدير عام وليس استشارة طبية أو غذائية — استشر أخصائي تغذية لحالتك الخاصة، خصوصاً إن كانت لديك حالة كلوية.",
     faq: [{ question: "هل ينطبق هذا على الجميع؟", answer: "هذه أرقام عامة مبنية على أبحاث تغذية شائعة — احتياجك الفعلي قد يختلف." }],
   },
   en: {
@@ -71,7 +72,7 @@ export default function ProteinCalculatorClient({ locale }: { locale: Locale }) 
   const [meals, setMeals] = useState("3");
 
   const result = calculateProtein({
-    weightKg: Math.max(1, parseFloat(weight) || 1),
+    weightKg: Math.max(1, (normalizeNumericInput(weight) ?? 1)),
     activityLevel: activity,
     goal,
     mealsPerDay: Math.max(1, parseInt(meals) || 1),

@@ -1,10 +1,58 @@
-# Hesabi — Project State
+# المِحساب (MIHSAB) — Project State
 
 _Last updated: 2026-08-11_
 
+## Latest pass (this session)
+
+- **Salary calculator — GOSI system selector**: added
+  `lib/config/gosiRules.ts` with two named, dated config objects for
+  Saudi GOSI social-insurance contribution rates — `GOSI_LEGACY_SYSTEM`
+  (flat ~9% employee / ~9% employer annuities on basic+housing, capped
+  at a wage ceiling) and `GOSI_NEW_SYSTEM` (the restructured system
+  phased in gradually from July 2022 through 2024/2025, using ~11%
+  employee / ~11.75% employer annuities as a full-phase-in reference
+  point), both plus a 0.75%/0.75% SANED unemployment-insurance
+  component. **These rates are example/reference figures compiled from
+  public commentary, not a live GOSI feed** — the UI shows a prominent
+  note ("تحقق من النسبة الحالية من موقع التأمينات الاجتماعية (GOSI)")
+  and the config file docstring says the same; treat them as a
+  reasonable starting point, not ground truth, and update
+  `lib/config/gosiRules.ts` (a one-line change per rate) once real
+  current figures are confirmed. `calculateSalary()` now takes
+  `system: "new" | "legacy"` and `includeGosi: boolean`, computing
+  employee/employer contributions capped at the wage ceiling; extended
+  Vitest coverage for both systems plus the wage-ceiling cap. UI: kept
+  the default form simple (basic/housing/other allowances/other
+  deductions) and put the GOSI system selector + include-toggle inside
+  a collapsible "إعدادات متقدمة" `<details>` section, matching the
+  pattern already used on the V60 calculator's advanced options.
+- **Scroll-reset investigation**: reviewed every `router.push`/
+  `router.replace` call across calculator client components and
+  `CalculatorShell` — all `{ scroll: false }` usages are query-string
+  syncs for in-page input changes (correct, intentional), and no
+  cross-page `<Link>` anywhere sets `scroll={false}` or otherwise
+  fights Next.js's default scroll-to-top on navigation. No custom
+  scroll-restoration logic exists. Conclusion: **there was no real
+  scroll-reset bug** — default Next.js App Router behavior was already
+  correct. The one real gap found was accessibility, not scroll: focus
+  wasn't moved to the new page's heading for keyboard/screen-reader
+  users on calculator-to-calculator navigation. Fixed by adding a ref +
+  `useEffect` keyed on the calculator slug in `CalculatorShell` that
+  focuses the `<h1 tabIndex={-1}>` on mount.
+- **Arabic content audit**: normalized 72 instances across
+  `messages/ar.json`, `lib/legalContent.ts`, and calculator client
+  components where the tanween-fatha diacritic was Unicode-ordered
+  before the trailing alef (`consonant + ً + ا`, e.g. "جدًا") instead
+  of after it (`consonant + ا + ً`, e.g. "جداً") — the correct
+  alef+tanween form. Read through calculator descriptions, "how it
+  works" sections, FAQs, and disclaimers for generic AI-translated
+  filler; the existing copy already reads naturally and concisely, so
+  no substantive rewriting was done beyond the tanween fix — being
+  honest that this item ended up smaller in scope than the other two.
+
 ## What this is
 
-Hesabi (حسابي) is a bilingual (Arabic RTL / English) consumer calculator
+المِحساب / MIHSAB is a bilingual (Arabic RTL / English) consumer calculator
 platform built with Next.js 14+ App Router, TypeScript, and Tailwind CSS v4.
 Phases 1–6 are complete: foundation, all 21 calculators, PWA/sharing,
 search/legal/analytics scaffolding, shareable OG images, ads/affiliate
@@ -158,3 +206,58 @@ architecture, and a full production-readiness audit.
   environment) — verified via HTTP status codes, curl'd OG images,
   `lang`/`dir` attributes, computed WCAG contrast ratios, and manual code
   review.
+
+## This pass: three targeted fixes
+
+- **Coffee Ratio + V60 merged into one calculator** at `/v60-calculator`
+  ("حاسبة القهوة / V60" / "Coffee / V60 Calculator") — the old
+  `coffee-ratio-calculator` route is deleted and 308-redirected to
+  `/v60-calculator` (and `/ar/...`, `/en/...`) via `redirects()` in
+  `next.config.ts`. New engine `lib/calculators/coffeeRecipe.ts`
+  (`calculateCoffeeRecipe`) replaces both `lib/calculators/v60.ts` and
+  `lib/calculators/coffeeRatio.ts` (deleted), covering solve-for-water /
+  solve-for-coffee / solve-for-ratio for any brew method (V60, French
+  Press, AeroPress, Chemex, Cold Brew, Custom), each with its own default
+  starting ratio — never locked, any of the three fields (coffee grams,
+  water grams, ratio) is directly editable and live-recalculates the
+  other two. Light/Balanced/Strong/Custom presets kept as starting values
+  only. V60-specific grind/water-temp guidance, bloom water/time, and pour
+  schedule kept in a collapsed `<details>` "خيارات متقدمة" / "Advanced
+  options" section. `lib/calculatorRegistry.ts`, `lib/searchIndex.ts`, and
+  the OG image route (`app/api/og/[slug]/route.tsx`) updated to the
+  merged engine/copy; category/homepage listings are registry-driven so
+  no other hardcoded references existed. Tests merged into
+  `lib/calculators/__tests__/coffeeRecipe.test.ts` (old v60/coffeeRatio
+  test files deleted, no coverage lost).
+- **Zakat calculator IA fix**: `app/[locale]/zakat-calculator/ZakatCalculatorClient.tsx`
+  now leads with a category chooser (ذهب / فضة / نقد / أصول أخرى — Gold
+  and Silver first) that shows only the relevant input fields per
+  category; liabilities and the nisab-basis toggle stay visible
+  underneath since they apply across categories. The calculation engine
+  (`lib/calculators/zakat.ts`) already fully supported gold, silver,
+  cash, investments, inventory, and receivables with a proper silver
+  nisab (595g) path — no engine changes were needed, this was purely an
+  information-architecture reorder.
+- **Fuel Cost Calculator**: added a third petrol octane option, 98, to
+  `lib/config/fuelPrices.ts` (`gasoline98`, indicative example price,
+  same disclaimer pattern as 91/95). The fuel-type `<Select>` in
+  `FuelCalculatorClient.tsx` maps over `FUEL_LABELS` so it picked up the
+  new option automatically; switching fuel type already reactively
+  updates the price field and result (verified, no code change needed
+  there).
+
+## Rebrand: Hesabi → المِحساب (MIHSAB)
+
+Full brand rename is complete: all copy (messages/*.json, `lib/seo.ts`,
+`lib/design-tokens.ts`, `lib/legalContent.ts`, footer/header, manifest, OG
+route, homepage metadata/JSON-LD), the `package.json` name, the
+`.env.example` placeholder domain (`mihsab.example`), and the contact email
+placeholder now read المِحساب / MIHSAB, with the tagline "احسبها... صح." /
+"Calculate it right." The old plain "H"-in-a-box placeholder logo was
+replaced with an original mark in `components/ui/Logo.tsx`: a single
+geometric stroke abstracting the bowl-and-tail shape of the Arabic letter ح
+that resolves into a checkmark tick, read as both "a deliberate, precise
+calculation" and "a correct result." It's used in the header, a small
+16px mark in the footer, and regenerated into `public/icon-192.svg` /
+`icon-512.svg` at matching proportions; the OG image route keeps a simple
+"M" letter-mark (satori-safe) rather than the full SVG path.

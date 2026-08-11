@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n";
 import SearchBox from "@/components/SearchBox";
+import Logo from "@/components/ui/Logo";
 
 export default async function SiteHeader({
   locale,
@@ -25,10 +26,8 @@ export default async function SiteHeader({
     <header className="border-b border-border bg-bg-elevated/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4 sm:px-6">
         <Link href={`/${locale}`} className="flex items-center gap-2 text-lg font-bold text-text">
-          <span className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] bg-accent text-accent-contrast">
-            H
-          </span>
-          {locale === "ar" ? "حسابي" : "Hesabi"}
+          <Logo size={32} />
+          {locale === "ar" ? "المِحساب" : "MIHSAB"}
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-text-muted lg:flex">
           {links.map((link) => (

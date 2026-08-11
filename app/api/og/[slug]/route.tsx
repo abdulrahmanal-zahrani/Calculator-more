@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
 import { calculateGoldValue, type Karat } from "@/lib/calculators/gold";
-import { calculateV60Recipe } from "@/lib/calculators/v60";
+import { calculateCoffeeRecipe } from "@/lib/calculators/coffeeRecipe";
 import { calculateTripBudget } from "@/lib/calculators/tripBudget";
 import { calculateFuelCost } from "@/lib/calculators/fuel";
 import { calculateDiscount } from "@/lib/calculators/discount";
@@ -81,8 +81,8 @@ function buildData(slug: string, locale: Locale, sp: URLSearchParams): OgData | 
     }
     case "v60-calculator": {
       const coffee = num(sp, "coffee", 20);
-      const preset = (sp.get("preset") as "beginner" | "balanced" | "strong" | "light" | "custom") || "balanced";
-      const r = calculateV60Recipe({ coffeeGrams: coffee, preset });
+      const ratio = num(sp, "ratio", 16);
+      const r = calculateCoffeeRecipe({ method: "v60", solveFor: "water", coffeeGrams: coffee, ratio });
       return {
         title,
         primary: `${plain(r.waterGrams, "g")} ${locale === "ar" ? "ماء" : "water"}`,
@@ -127,7 +127,7 @@ function buildData(slug: string, locale: Locale, sp: URLSearchParams): OgData | 
         primary: money(r.monthlyCost),
         breakdown: [
           { label: locale === "ar" ? "لكل رحلة" : "Per trip", value: money(r.tripCost) },
-          { label: locale === "ar" ? "سنويًا" : "Annual", value: money(r.annualCost) },
+          { label: locale === "ar" ? "سنوياً" : "Annual", value: money(r.annualCost) },
           { label: locale === "ar" ? "لترات" : "Liters", value: plain(r.litersConsumed, "L") },
         ],
       };
@@ -211,9 +211,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
               fontWeight: 700,
             }}
           >
-            H
+            M
           </div>
-          <div style={{ display: "flex", fontSize: 30, fontWeight: 700, color: BRAND.card }}>Hesabi</div>
+          <div style={{ display: "flex", fontSize: 30, fontWeight: 700, color: BRAND.card }}>MIHSAB</div>
         </div>
 
         {/* Title */}
@@ -263,7 +263,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         </div>
 
         <div style={{ display: "flex", marginTop: 24, fontSize: 18, color: BRAND.accent }}>
-          hesabi.app
+          mihsab.app
         </div>
       </div>
     ),

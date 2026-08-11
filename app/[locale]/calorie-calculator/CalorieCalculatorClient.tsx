@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -18,7 +19,7 @@ const ACTIVITY_LABELS: Record<ActivityLevel, { ar: string; en: string }> = {
   light: { ar: "نشاط خفيف", en: "Light activity" },
   moderate: { ar: "نشاط متوسط", en: "Moderate activity" },
   active: { ar: "نشيط", en: "Active" },
-  veryActive: { ar: "نشيط جدًا", en: "Very active" },
+  veryActive: { ar: "نشيط جداً", en: "Very active" },
 };
 
 const COPY = {
@@ -35,7 +36,7 @@ const COPY = {
     lose: "خسارة وزن",
     maintain: "الحفاظ على الوزن",
     gain: "زيادة وزن",
-    target: "السعرات المستهدفة يوميًا",
+    target: "السعرات المستهدفة يومياً",
     bmr: "معدل الأيض الأساسي (BMR)",
     tdee: "إجمالي الطاقة اليومية (TDEE)",
     range: "المدى المقترح",
@@ -44,9 +45,9 @@ const COPY = {
     howItWorks: [
       "نحسب BMR بمعادلة Mifflin-St Jeor باستخدام الوزن والطول والعمر والجنس.",
       "نضرب BMR في معامل النشاط للحصول على TDEE (إجمالي الطاقة اليومية).",
-      "حسب هدفك، نطرح أو نضيف 500 سعرة تقريبًا لخسارة أو زيادة الوزن بمعدل صحي.",
+      "حسب هدفك، نطرح أو نضيف 500 سعرة تقريباً لخسارة أو زيادة الوزن بمعدل صحي.",
     ],
-    disclaimer: "هذه الحاسبة تقدّم تقديرًا عامًا فقط وليست استشارة طبية أو غذائية. استشر أخصائي تغذية أو طبيب قبل اتخاذ قرارات غذائية مهمة.",
+    disclaimer: "هذه الحاسبة تقدّم تقديراً عاماً فقط وليست استشارة طبية أو غذائية. استشر أخصائي تغذية أو طبيب قبل اتخاذ قرارات غذائية مهمة.",
     faq: [{ question: "هل هذه الأرقام دقيقة لكل شخص؟", answer: "لا، هي تقديرات عامة — الاحتياج الفعلي يختلف حسب عوامل صحية فردية." }],
   },
   en: {
@@ -89,9 +90,9 @@ export default function CalorieCalculatorClient({ locale }: { locale: Locale }) 
 
   const result = calculateCalories({
     sex,
-    age: Math.max(1, parseFloat(age) || 1),
-    heightCm: Math.max(1, parseFloat(height) || 1),
-    weightKg: Math.max(1, parseFloat(weight) || 1),
+    age: Math.max(1, (normalizeNumericInput(age) ?? 1)),
+    heightCm: Math.max(1, (normalizeNumericInput(height) ?? 1)),
+    weightKg: Math.max(1, (normalizeNumericInput(weight) ?? 1)),
     activityLevel: activity,
     goal,
   });

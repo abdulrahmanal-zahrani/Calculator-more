@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -41,7 +42,7 @@ const COPY = {
       "نحسب معامل التحجيم بقسمة عدد الحصص المطلوب على عدد الحصص الأصلي.",
       "نضرب كمية كل مكوّن في هذا المعامل للحصول على الكمية الجديدة.",
     ],
-    disclaimer: "قد تختلف نتائج الخَبز الدقيقة عند تكبير الوصفات كثيرًا — اضبط أوقات الطهي حسب الحاجة.",
+    disclaimer: "قد تختلف نتائج الخَبز الدقيقة عند تكبير الوصفات كثيراً — اضبط أوقات الطهي حسب الحاجة.",
     faq: [{ question: "هل تعمل مع أي وحدة قياس؟", answer: "نعم، اختر الوحدة المناسبة لكل مكوّن." }],
   },
   en: {
@@ -80,8 +81,8 @@ export default function RecipeScalingClient({ locale }: { locale: Locale }) {
   }
 
   const result = scaleRecipe({
-    originalServings: Math.max(1, parseFloat(original) || 1),
-    desiredServings: Math.max(1, parseFloat(desired) || 1),
+    originalServings: Math.max(1, (normalizeNumericInput(original) ?? 1)),
+    desiredServings: Math.max(1, (normalizeNumericInput(desired) ?? 1)),
     ingredients: ingredients.map((i) => ({ ...i, quantity: Math.max(0, i.quantity || 0) })),
   });
 
@@ -114,7 +115,7 @@ export default function RecipeScalingClient({ locale }: { locale: Locale }) {
                 <Input label={c.ingredient} value={ing.name} onChange={(e) => update(i, { name: e.target.value })} />
               </div>
               <div className="col-span-2">
-                <Input label={c.quantity} type="number" min={0} inputMode="decimal" value={ing.quantity} onChange={(e) => update(i, { quantity: parseFloat(e.target.value) || 0 })} />
+                <Input label={c.quantity} type="number" min={0} inputMode="decimal" value={ing.quantity} onChange={(e) => update(i, { quantity: (normalizeNumericInput(e.target.value) ?? 0) })} />
               </div>
               <div className="col-span-2">
                 <Select label={c.unit} value={ing.unit} onChange={(e) => update(i, { unit: e.target.value as IngredientUnit })}>

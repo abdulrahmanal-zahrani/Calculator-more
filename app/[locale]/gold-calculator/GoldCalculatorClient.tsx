@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -38,15 +39,15 @@ const COPY = {
       "نضرب السعر الفعلي في الوزن للحصول على القيمة الخام.",
       "نضيف أجور الصنعة (في وضع الشراء فقط)، ثم نحسب ضريبة القيمة المضافة على المجموع.",
     ],
-    disclaimer: "الأسعار المدخلة يدوية وليست حية. تحقق دائمًا من السعر الفعلي لدى المحل قبل الشراء أو البيع.",
+    disclaimer: "الأسعار المدخلة يدوية وليست حية. تحقق دائماً من السعر الفعلي لدى المحل قبل الشراء أو البيع.",
     faq: [
       {
-        question: "هل السعر محدث تلقائيًا؟",
-        answer: "لا، هذه الحاسبة تعتمد على إدخال يدوي للسعر حاليًا. لا يوجد اتصال بمزود أسعار حي بعد.",
+        question: "هل السعر محدث تلقائياً؟",
+        answer: "لا، هذه الحاسبة تعتمد على إدخال يدوي للسعر حالياً. لا يوجد اتصال بمزود أسعار حي بعد.",
       },
       {
         question: "لماذا يختلف السعر بين الشراء والبيع؟",
-        answer: "عند البيع غالبًا لا تُسترد أجور الصنعة ولا تُحتسب ضريبة القيمة المضافة على نفس الأساس.",
+        answer: "عند البيع غالباً لا تُسترد أجور الصنعة ولا تُحتسب ضريبة القيمة المضافة على نفس الأساس.",
       },
     ],
   },
@@ -102,9 +103,9 @@ export default function GoldCalculatorClient({ locale }: { locale: Locale }) {
     router.replace(`?${params.toString()}`, { scroll: false });
   }
 
-  const weightNum = Math.max(0, parseFloat(weight) || 0);
-  const priceNum = Math.max(0, parseFloat(price) || 0);
-  const makingNum = Math.max(0, parseFloat(making) || 0);
+  const weightNum = Math.max(0, (normalizeNumericInput(weight) ?? 0));
+  const priceNum = Math.max(0, (normalizeNumericInput(price) ?? 0));
+  const makingNum = Math.max(0, (normalizeNumericInput(making) ?? 0));
 
   const result = calculateGoldValue({
     weightGrams: weightNum,

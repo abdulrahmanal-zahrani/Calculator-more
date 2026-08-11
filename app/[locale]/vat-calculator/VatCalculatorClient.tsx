@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -75,8 +76,8 @@ export default function VatCalculatorClient({ locale }: { locale: Locale }) {
   }
 
   const result = calculateVat({
-    amount: Math.max(0, parseFloat(amount) || 0),
-    ratePercent: Math.max(0, parseFloat(rate) || 0),
+    amount: Math.max(0, (normalizeNumericInput(amount) ?? 0)),
+    ratePercent: Math.max(0, (normalizeNumericInput(rate) ?? 0)),
     mode,
   });
 

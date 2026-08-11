@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import Alert from "@/components/ui/Alert";
 import FAQAccordion, { FAQItem } from "@/components/ui/FAQAccordion";
@@ -41,10 +41,15 @@ export default function CalculatorShell({
   t,
 }: CalculatorShellProps) {
   const related = getCalculatorsByCategory(meta.category).filter((c) => c.slug !== meta.slug);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     recordRecentlyUsed(meta.slug);
     trackEvent("calculator_view", { calculatorSlug: meta.slug, locale });
+    // Move focus to the page's H1 on calculator navigation, for keyboard/
+    // screen-reader users — mirrors the scroll-to-top that Next.js's
+    // default <Link> navigation already performs.
+    headingRef.current?.focus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meta.slug]);
 
@@ -58,7 +63,11 @@ export default function CalculatorShell({
         ]}
       />
 
-      <h1 className="mt-4 text-3xl font-bold text-text sm:text-4xl">
+      <h1
+        ref={headingRef}
+        tabIndex={-1}
+        className="mt-4 text-3xl font-bold text-text outline-none sm:text-4xl"
+      >
         <span className="me-2">{meta.icon}</span>
         {meta.name[locale]}
       </h1>
