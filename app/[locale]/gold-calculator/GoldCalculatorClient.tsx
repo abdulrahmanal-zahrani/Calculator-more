@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -102,9 +103,9 @@ export default function GoldCalculatorClient({ locale }: { locale: Locale }) {
     router.replace(`?${params.toString()}`, { scroll: false });
   }
 
-  const weightNum = Math.max(0, parseFloat(weight) || 0);
-  const priceNum = Math.max(0, parseFloat(price) || 0);
-  const makingNum = Math.max(0, parseFloat(making) || 0);
+  const weightNum = Math.max(0, (normalizeNumericInput(weight) ?? 0));
+  const priceNum = Math.max(0, (normalizeNumericInput(price) ?? 0));
+  const makingNum = Math.max(0, (normalizeNumericInput(making) ?? 0));
 
   const result = calculateGoldValue({
     weightGrams: weightNum,

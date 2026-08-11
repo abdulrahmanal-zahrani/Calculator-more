@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -89,9 +90,9 @@ export default function CalorieCalculatorClient({ locale }: { locale: Locale }) 
 
   const result = calculateCalories({
     sex,
-    age: Math.max(1, parseFloat(age) || 1),
-    heightCm: Math.max(1, parseFloat(height) || 1),
-    weightKg: Math.max(1, parseFloat(weight) || 1),
+    age: Math.max(1, (normalizeNumericInput(age) ?? 1)),
+    heightCm: Math.max(1, (normalizeNumericInput(height) ?? 1)),
+    weightKg: Math.max(1, (normalizeNumericInput(weight) ?? 1)),
     activityLevel: activity,
     goal,
   });

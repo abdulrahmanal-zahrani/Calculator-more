@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -82,8 +83,8 @@ export default function DiscountCalculatorClient({ locale }: { locale: Locale })
     router.replace(`?${params.toString()}`, { scroll: false });
   }
 
-  const originalNum = Math.max(0, parseFloat(original) || 0);
-  const discountNums = discounts.map((d) => Math.min(100, Math.max(0, parseFloat(d) || 0)));
+  const originalNum = Math.max(0, (normalizeNumericInput(original) ?? 0));
+  const discountNums = discounts.map((d) => Math.min(100, Math.max(0, (normalizeNumericInput(d) ?? 0))));
 
   const result = calculateDiscount({ originalPrice: originalNum, discountPercents: discountNums });
 

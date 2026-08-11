@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -91,15 +92,15 @@ export default function LoanCalculatorClient({ locale }: { locale: Locale }) {
     router.replace(`?${params.toString()}`, { scroll: false });
   }
 
-  const amountNum = Math.max(0, parseFloat(amount) || 0);
-  const downNum = Math.min(amountNum, Math.max(0, parseFloat(down) || 0));
+  const amountNum = Math.max(0, (normalizeNumericInput(amount) ?? 0));
+  const downNum = Math.min(amountNum, Math.max(0, (normalizeNumericInput(down) ?? 0)));
   const termNum = Math.max(1, parseInt(term) || 1);
 
   const result = calculateLoanPayment({
     amount: amountNum,
-    annualRatePercent: Math.max(0, parseFloat(rate) || 0),
+    annualRatePercent: Math.max(0, (normalizeNumericInput(rate) ?? 0)),
     termMonths: termNum,
-    fees: Math.max(0, parseFloat(fees) || 0),
+    fees: Math.max(0, (normalizeNumericInput(fees) ?? 0)),
     downPayment: downNum,
   });
 

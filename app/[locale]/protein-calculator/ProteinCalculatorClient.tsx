@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -71,7 +72,7 @@ export default function ProteinCalculatorClient({ locale }: { locale: Locale }) 
   const [meals, setMeals] = useState("3");
 
   const result = calculateProtein({
-    weightKg: Math.max(1, parseFloat(weight) || 1),
+    weightKg: Math.max(1, (normalizeNumericInput(weight) ?? 1)),
     activityLevel: activity,
     goal,
     mealsPerDay: Math.max(1, parseInt(meals) || 1),

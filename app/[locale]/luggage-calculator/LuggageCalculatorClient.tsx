@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -72,7 +73,7 @@ export default function LuggageCalculatorClient({ locale }: { locale: Locale }) 
   }
 
   const result = calculateLuggage({
-    allowanceKg: Math.max(0, parseFloat(allowance) || 0),
+    allowanceKg: Math.max(0, (normalizeNumericInput(allowance) ?? 0)),
     bags: bags.map((b) => ({ ...b, weightKg: Math.max(0, b.weightKg || 0) })),
   });
 
@@ -102,7 +103,7 @@ export default function LuggageCalculatorClient({ locale }: { locale: Locale }) 
                 <Input label={c.bag} value={b.name} onChange={(e) => update(i, { name: e.target.value })} />
               </div>
               <div className="flex-1">
-                <Input label={c.weight} type="number" min={0} inputMode="decimal" value={b.weightKg} onChange={(e) => update(i, { weightKg: parseFloat(e.target.value) || 0 })} />
+                <Input label={c.weight} type="number" min={0} inputMode="decimal" value={b.weightKg} onChange={(e) => update(i, { weightKg: (normalizeNumericInput(e.target.value) ?? 0) })} />
               </div>
               {bags.length > 1 && (
                 <Button variant="ghost" size="sm" onClick={() => setBags((prev) => prev.filter((_, idx) => idx !== i))}>

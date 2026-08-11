@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -84,7 +85,7 @@ export default function V60CalculatorClient({ locale }: { locale: Locale }) {
     router.replace(`?${params.toString()}`, { scroll: false });
   }
 
-  const coffeeNum = Math.max(0, parseFloat(coffee) || 0);
+  const coffeeNum = Math.max(0, (normalizeNumericInput(coffee) ?? 0));
   const ratio = preset !== "custom" ? V60_PRESET_RATIOS[preset] : 15;
 
   const result = calculateV60Recipe({ coffeeGrams: coffeeNum, preset, ratio });

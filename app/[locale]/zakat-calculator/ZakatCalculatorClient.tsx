@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -97,7 +98,7 @@ export default function ZakatCalculatorClient({ locale }: { locale: Locale }) {
   const [liabilities, setLiabilities] = useState("0");
   const [nisabBasis, setNisabBasis] = useState<"gold" | "silver">("gold");
 
-  const n = (v: string) => Math.max(0, parseFloat(v) || 0);
+  const n = (v: string) => Math.max(0, (normalizeNumericInput(v) ?? 0));
 
   const result = calculateZakat({
     cash: n(cash),

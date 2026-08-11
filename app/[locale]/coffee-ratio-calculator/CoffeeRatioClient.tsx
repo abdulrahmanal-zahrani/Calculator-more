@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -73,13 +74,13 @@ export default function CoffeeRatioClient({ locale }: { locale: Locale }) {
   const [waterMl, setWaterMl] = useState("320");
   const [customRatio, setCustomRatio] = useState(String(BREW_RATIOS.v60));
 
-  const ratio = method === "custom" ? Math.max(0.1, parseFloat(customRatio) || BREW_RATIOS.custom) : undefined;
+  const ratio = method === "custom" ? Math.max(0.1, (normalizeNumericInput(customRatio) ?? BREW_RATIOS.custom)) : undefined;
 
   const result = calculateCoffeeRatio({
     method,
     solveFor,
-    coffeeGrams: Math.max(0, parseFloat(coffeeGrams) || 0),
-    waterMl: Math.max(0, parseFloat(waterMl) || 0),
+    coffeeGrams: Math.max(0, (normalizeNumericInput(coffeeGrams) ?? 0)),
+    waterMl: Math.max(0, (normalizeNumericInput(waterMl) ?? 0)),
     ratio,
   });
 

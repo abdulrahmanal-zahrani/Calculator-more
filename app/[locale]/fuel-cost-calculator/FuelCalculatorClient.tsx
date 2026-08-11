@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -83,10 +84,10 @@ export default function FuelCalculatorClient({ locale }: { locale: Locale }) {
   }
 
   const result = calculateFuelCost({
-    distanceKm: Math.max(0, parseFloat(distance) || 0),
-    efficiencyLPer100Km: Math.max(0, parseFloat(efficiency) || 0),
-    pricePerLiter: Math.max(0, parseFloat(price) || 0),
-    tripsPerMonth: Math.max(0, parseFloat(trips) || 0),
+    distanceKm: Math.max(0, (normalizeNumericInput(distance) ?? 0)),
+    efficiencyLPer100Km: Math.max(0, (normalizeNumericInput(efficiency) ?? 0)),
+    pricePerLiter: Math.max(0, (normalizeNumericInput(price) ?? 0)),
+    tripsPerMonth: Math.max(0, (normalizeNumericInput(trips) ?? 0)),
   });
 
   const shareUrl =

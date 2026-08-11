@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -68,9 +69,9 @@ export default function TravelFuelClient({ locale }: { locale: Locale }) {
   }
 
   const result = calculateTravelFuel({
-    distanceKm: Math.max(0, parseFloat(distance) || 0),
-    efficiencyLPer100Km: Math.max(0.1, parseFloat(efficiency) || 0.1),
-    fuelPricePerLiter: Math.max(0, parseFloat(price) || 0),
+    distanceKm: Math.max(0, (normalizeNumericInput(distance) ?? 0)),
+    efficiencyLPer100Km: Math.max(0.1, (normalizeNumericInput(efficiency) ?? 0.1)),
+    fuelPricePerLiter: Math.max(0, (normalizeNumericInput(price) ?? 0)),
     travelers: Math.max(1, parseInt(travelers) || 1),
   });
 

@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -93,7 +94,7 @@ export default function TripBudgetCalculatorClient({ locale }: { locale: Locale 
     router.replace(`?${params.toString()}`, { scroll: false });
   }
 
-  const num = (v: string) => Math.max(0, parseFloat(v) || 0);
+  const num = (v: string) => Math.max(0, (normalizeNumericInput(v) ?? 0));
 
   const result = calculateTripBudget({
     travelers: Math.max(1, parseInt(travelers) || 1),

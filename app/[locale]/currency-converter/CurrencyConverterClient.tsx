@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -76,7 +77,7 @@ export default function CurrencyConverterClient({ locale }: { locale: Locale }) 
   }
 
   const result = calculateCurrencyConversion({
-    amount: Math.max(0, parseFloat(amount) || 0),
+    amount: Math.max(0, (normalizeNumericInput(amount) ?? 0)),
     from,
     to,
     ratesToSar: FALLBACK_RATES_TO_SAR,

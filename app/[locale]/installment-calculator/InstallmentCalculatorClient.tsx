@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -70,15 +71,15 @@ export default function InstallmentCalculatorClient({ locale }: { locale: Locale
     router.replace(`?${params.toString()}`, { scroll: false });
   }
 
-  const priceNum = Math.max(0, parseFloat(price) || 0);
-  const downNum = Math.min(priceNum, Math.max(0, parseFloat(down) || 0));
+  const priceNum = Math.max(0, (normalizeNumericInput(price) ?? 0));
+  const downNum = Math.min(priceNum, Math.max(0, (normalizeNumericInput(down) ?? 0)));
 
   const result = calculateInstallment({
     price: priceNum,
     downPayment: downNum,
-    annualRatePercent: Math.max(0, parseFloat(rate) || 0),
+    annualRatePercent: Math.max(0, (normalizeNumericInput(rate) ?? 0)),
     termMonths: Math.max(1, parseInt(term) || 1),
-    fees: Math.max(0, parseFloat(fees) || 0),
+    fees: Math.max(0, (normalizeNumericInput(fees) ?? 0)),
   });
 
   const shareUrl =

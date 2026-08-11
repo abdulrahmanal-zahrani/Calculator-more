@@ -1,4 +1,5 @@
 "use client";
+import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
@@ -106,10 +107,10 @@ export default function InsuranceComparisonClient({ locale }: { locale: Locale }
                   </Button>
                 )}
               </div>
-              <Input label={c.premium} type="number" min={0} inputMode="decimal" value={p.annualPremium} onChange={(e) => update(i, { annualPremium: parseFloat(e.target.value) || 0 })} />
-              <Input label={c.deductible} type="number" min={0} inputMode="decimal" value={p.deductible} onChange={(e) => update(i, { deductible: parseFloat(e.target.value) || 0 })} />
-              <Input label={c.coverage} type="number" min={0} inputMode="decimal" value={p.coverageAmount} onChange={(e) => update(i, { coverageAmount: parseFloat(e.target.value) || 0 })} />
-              <Input label={c.fees} type="number" min={0} inputMode="decimal" value={p.additionalFees} onChange={(e) => update(i, { additionalFees: parseFloat(e.target.value) || 0 })} />
+              <Input label={c.premium} type="number" min={0} inputMode="decimal" value={p.annualPremium} onChange={(e) => update(i, { annualPremium: (normalizeNumericInput(e.target.value) ?? 0) })} />
+              <Input label={c.deductible} type="number" min={0} inputMode="decimal" value={p.deductible} onChange={(e) => update(i, { deductible: (normalizeNumericInput(e.target.value) ?? 0) })} />
+              <Input label={c.coverage} type="number" min={0} inputMode="decimal" value={p.coverageAmount} onChange={(e) => update(i, { coverageAmount: (normalizeNumericInput(e.target.value) ?? 0) })} />
+              <Input label={c.fees} type="number" min={0} inputMode="decimal" value={p.additionalFees} onChange={(e) => update(i, { additionalFees: (normalizeNumericInput(e.target.value) ?? 0) })} />
             </div>
           ))}
           <Button variant="secondary" size="sm" onClick={() => setPolicies((prev) => [...prev, defaultPolicy(`${locale === "ar" ? "العرض" : "Policy"} ${prev.length + 1}`)])}>
