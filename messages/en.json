@@ -39,6 +39,18 @@
   },
   "footer": {
     "rights": "All rights reserved",
-    "about": "Hesabi is a bilingual platform for everyday calculation tools."
+    "about": "Hesabi is a bilingual platform for everyday calculation tools.",
+    "aboutTitle": "About",
+    "aboutBody": "Hesabi is an independent, bilingual (Arabic/English) calculator platform covering money, cars, lifestyle, and travel. All calculations run in your browser.",
+    "contactTitle": "Contact",
+    "contactBody": "Questions or feedback? Reach us at",
+    "legalTitle": "Legal",
+    "categoriesTitle": "Categories",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "disclaimer": "General Disclaimer",
+    "financialDisclaimer": "Financial Disclaimer",
+    "healthDisclaimer": "Health Disclaimer",
+    "dataSources": "Data Sources"
   }
 }

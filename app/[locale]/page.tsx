@@ -2,8 +2,10 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import type { Locale } from "@/i18n";
 import { locales } from "@/i18n";
-import { FLAGSHIP_CALCULATORS, CATEGORIES } from "@/lib/calculatorRegistry";
+import { CATEGORIES } from "@/lib/calculatorRegistry";
+import { getPopularCalculators } from "@/lib/trending";
 import { buildMetadata, webApplicationJsonLd } from "@/lib/seo";
+import SearchBox from "@/components/SearchBox";
 import type { Metadata } from "next";
 
 export function generateStaticParams() {
@@ -42,6 +44,8 @@ export default async function HomePage({
     path: "",
   });
 
+  const popular = getPopularCalculators();
+
   return (
     <div>
       <script
@@ -53,19 +57,15 @@ export default async function HomePage({
         <h1 className="text-4xl font-bold tracking-tight text-text sm:text-5xl">{brand("name")}</h1>
         <p className="mt-3 text-lg text-text-muted">{brand("tagline")}</p>
 
-        <form action={`/${l}/money`} className="mx-auto mt-8 flex max-w-xl items-center gap-2">
-          <input
-            type="search"
-            placeholder={t("searchPlaceholder")}
-            className="w-full rounded-[var(--radius-lg)] border border-border bg-bg-elevated px-5 py-3.5 text-base text-text shadow-[var(--shadow-sm)] outline-none focus:border-accent"
-          />
-        </form>
+        <div className="mt-8">
+          <SearchBox locale={l} placeholder={t("searchPlaceholder")} variant="hero" />
+        </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <h2 className="text-xl font-semibold text-text">{t("popularTitle")}</h2>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {FLAGSHIP_CALCULATORS.map((calc) => (
+          {popular.map((calc) => (
             <Link
               key={calc.slug}
               href={`/${l}/${calc.slug}`}

@@ -1,4 +1,6 @@
-import { ReactNode } from "react";
+"use client";
+
+import { ReactNode, useEffect } from "react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import Alert from "@/components/ui/Alert";
 import FAQAccordion, { FAQItem } from "@/components/ui/FAQAccordion";
@@ -6,6 +8,8 @@ import ShareBar from "@/components/ui/ShareBar";
 import AdSlot from "@/components/ui/AdSlot";
 import Card from "@/components/ui/Card";
 import { CalculatorMeta, getCalculatorsByCategory } from "@/lib/calculatorRegistry";
+import { recordRecentlyUsed } from "@/lib/trending";
+import { trackEvent } from "@/lib/analytics";
 import type { Locale } from "@/i18n";
 import Link from "next/link";
 
@@ -37,6 +41,12 @@ export default function CalculatorShell({
   t,
 }: CalculatorShellProps) {
   const related = getCalculatorsByCategory(meta.category).filter((c) => c.slug !== meta.slug);
+
+  useEffect(() => {
+    recordRecentlyUsed(meta.slug);
+    trackEvent("calculator_view", { calculatorSlug: meta.slug, locale });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meta.slug]);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Button from "./Button";
+import { trackEvent } from "@/lib/analytics";
 
 interface ShareBarProps {
   url: string;
@@ -39,6 +40,7 @@ export default function ShareBar({ url, title, copyLabel, copiedLabel, shareLabe
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
+      trackEvent("calculator_copy_link", { url });
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // clipboard unavailable — silently ignore
@@ -55,6 +57,7 @@ export default function ShareBar({ url, title, copyLabel, copiedLabel, shareLabe
           target="_blank"
           rel="noopener noreferrer"
           aria-label={link.name}
+          onClick={() => trackEvent("calculator_share", { url, channel: link.name })}
           className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-bg-elevated text-base hover:border-accent"
         >
           {link.icon}

@@ -6,7 +6,8 @@ _Last updated: 2026-08-11_
 
 Hesabi (حسابي) is a bilingual (Arabic RTL / English) consumer calculator
 platform built with Next.js 14+ App Router, TypeScript, and Tailwind CSS v4.
-This is the Phase 1 build: foundation + 8 flagship calculators.
+Phases 1–5 (foundation, all 21 calculators, PWA/sharing basics, search/
+legal/analytics scaffolding, and an audit pass) are complete.
 
 ## Stack
 
@@ -18,95 +19,95 @@ This is the Phase 1 build: foundation + 8 flagship calculators.
 
 ## What's complete
 
-- **i18n routing**: `/[locale]/...` with `ar` (default) and `en`, via
-  `middleware.ts`→`proxy.ts` (Next 16 renamed convention) + `i18n.ts`.
-  Locale switch preserves the current path.
-- **Design system**: tokens in `app/globals.css` (`:root` + dark media
-  query) and mirrored in `lib/design-tokens.ts`. Brand accent is a refined
-  teal (`--color-accent`). Reusable components in `components/ui/`: Button,
-  Input, Select, Card, ResultCard, Tabs, Breadcrumbs, Badge, Alert,
-  FAQAccordion, ShareBar, AdSlot.
-- **Calculator shell**: `components/calculator/CalculatorShell.tsx` — used
-  by all 8 flagship calculators. Provides breadcrumb, H1, intro, form/result
-  card, share bar, ad slot, how-it-works, FAQ, related calculators,
-  disclaimer.
-- **Homepage** (`app/[locale]/page.tsx`): hero + search box (routes to
-  Money category for now), popular calculators grid, categories grid, "why
-  Hesabi" section.
-- **SEO**: `lib/seo.ts` — `generateMetadata` helper (title/description/
-  canonical/hreflang/OG/Twitter) + JSON-LD builders (WebApplication,
-  FAQPage, BreadcrumbList), wired into every calculator + home page.
-- **8 flagship calculators**, each with a pure calculation engine + Vitest
-  tests + a bilingual page using the shared shell + URL-state (query params
-  reopen the same calculation via `useSearchParams`/`router.replace`):
-  1. Gold Calculator (`/gold-calculator`) — karat purity, making charge,
-     15% VAT (`lib/config/vat.ts`, ZATCA-cited), buy/sell modes.
-  2. Salary Calculator (`/salary-calculator`) — basic + allowances −
-     deductions → gross/net/annual, with a non-official-payroll disclaimer.
-  3. Currency Converter (`/currency-converter`) — 16 currencies, static
-     fallback rates (`lib/services/currencyService.ts`), swap button.
-  4. Discount Calculator (`/discount-calculator`) — stacked/sequential
-     discounts with per-step breakdown.
-  5. Loan Calculator (`/loan-calculator`) — standard amortization, monthly
-     payment, full schedule (first 12 rows shown), conventional-vs-Islamic
-     financing note (framing only, not fabricated religious content).
-  6. Fuel Cost Calculator (`/fuel-cost-calculator`) — indicative Saudi fuel
-     prices (`lib/config/fuelPrices.ts`), trip/monthly/annual cost.
-  7. V60 Coffee Calculator (`/v60-calculator`) — flagship design: presets,
-     bloom water/time, 3-pour schedule, target brew time.
-  8. Trip Budget Calculator (`/trip-budget-calculator`) — flights,
-     accommodation, food, transport, activities, shopping, buffer %.
-- **Category stub pages**: `/money`, `/cars`, `/lifestyle`, `/travel` list
-  the flagship tools in that category plus "coming soon" cards (Zakat, VAT,
-  Installment, Car Loan, Insurance Comparison, Maintenance Cost, Coffee
-  Ratio, Recipe Scaling, Calories, Protein, Travel Fuel, Luggage, Time
-  Zone) — see `lib/calculatorRegistry.ts`.
+- **i18n routing, design system, calculator shell, homepage, SEO** — see
+  git history / Phase 1 for detail; unchanged in shape, just reused.
+- **21 calculators**, each with a pure calculation engine + Vitest tests +
+  a bilingual page using the shared shell + URL-state where relevant:
+  - Money: Gold, Salary, Currency, Discount, Loan, **Zakat, VAT,
+    Installment**.
+  - Cars: Fuel Cost, **Car Loan, Insurance Comparison, Maintenance Cost**.
+  - Lifestyle: V60 Coffee, **Coffee Ratio, Recipe Scaling, Calorie,
+    Protein**.
+  - Travel: Trip Budget, **Travel Fuel, Luggage, Time Zone**.
+  - (Bold = added in Phase 2.) Zakat is explicit that it's a general
+    estimate, not a fatwa; Calorie/Protein carry a "not medical advice"
+    note; VAT cites ZATCA's 15% rate from the existing `lib/config/vat.ts`.
+  - Category pages (`/money`, `/cars`, `/lifestyle`, `/travel`) now link to
+    all 21 live calculators — `COMING_SOON` in `lib/calculatorRegistry.ts`
+    is empty (kept, typed, for future additions).
+  - Related-calculator links (via `CalculatorShell`) are automatic within
+    each category, giving the topical clusters called for in the brief
+    (Gold/Zakat live in Money together; Fuel/Car Loan/Maintenance in Cars;
+    Travel Fuel/Luggage/Time Zone/Trip Budget in Travel; Coffee Ratio/V60/
+    Recipe Scaling in Lifestyle).
+- **Tests**: 78 Vitest tests across 21 calculator engines, covering normal,
+  zero, negative, and invalid-input cases. All passing.
+- **Search**: `lib/calculatorRegistry.ts` + `lib/searchIndex.ts` (bilingual
+  keyword synonyms, e.g. "ذهب" → Gold/Zakat, "سيارة" → Fuel/Car
+  Loan/Maintenance) feed `lib/search.ts`, a client-side substring/token
+  fuzzy matcher. `components/SearchBox.tsx` is wired into both the header
+  (compact) and the homepage hero (full), with a live dropdown.
+- **Trending/Popular**: `lib/trending.ts` — a hardcoded, clearly-commented
+  initial "popular" ordering (`POPULAR_SLUGS`, with a `TODO` to replace it
+  with a real usage-ranked list once analytics exist) plus a
+  localStorage-backed "recently used" list recorded from
+  `CalculatorShell` on every calculator view. No fake backend.
+- **Analytics scaffolding**: `lib/analytics.ts` exports `trackEvent`, a
+  no-op-by-default abstraction (console.debug only in dev) called from
+  calculator view, share, and copy-link interaction points. Documented as
+  a one-line change to wire a real provider (Plausible/Umami/GA4) later —
+  no keys are available, so nothing live is faked.
+- **PWA**: `app/manifest.ts` (Next's typed manifest route), two brand-mark
+  SVG icons (`public/icon-192.svg`, `public/icon-512.svg`, teal "H"
+  mark), `viewport.themeColor`, and a hand-rolled minimal service worker
+  (`public/sw.js`, cache-first for static assets only — JS/CSS/SVG/PNG/
+  fonts — not HTML navigations, to avoid serving stale pages after a
+  deploy). Registered from `app/[locale]/layout.tsx`. Since every
+  calculator already uses manual-entry/static fallback data (no live
+  fetches), this is sufficient for offline calculator use once visited.
+- **Legal pages**: Privacy Policy, Terms of Use, General Disclaimer,
+  Financial Disclaimer, Health Disclaimer, and Data Sources — real,
+  non-fabricated boilerplate in both locales (`lib/legalContent.ts` +
+  `components/legal/LegalPageContent.tsx`), linked from a rebuilt
+  `SiteFooter` (About, Contact, Categories, Legal columns).
 - **Service abstraction seams** (no live API keys used anywhere):
-  `lib/services/goldService.ts` and `lib/services/currencyService.ts` both
-  document the env var they'd need (`GOLD_PRICE_API_KEY`,
-  `EXCHANGE_RATE_API_KEY`, see `.env.example`) and fall back to manual entry
-  / static rates when unset. Never fabricates a live call.
-- **Tests**: 37 Vitest tests across all 8 calculator engines
-  (`lib/calculators/__tests__/`), covering normal, zero, negative, and
-  invalid-input cases. All passing.
-- **Quality bar**: `npm run build` succeeds, `npm run lint` is clean (0
-  warnings/errors), `npm test` (Vitest) passes 37/37. Verified both `/ar`
-  and `/en` render with the correct `dir` attribute via a local prod server
-  smoke test (`next start` + curl against all routes).
+  `lib/services/goldService.ts` and `lib/services/currencyService.ts`
+  document the env var they'd need, unchanged from Phase 1.
+- **Quality bar**: `npm run build` succeeds with no warnings, `npm run
+  lint` is clean (0 errors/warnings), `npm test` (Vitest) passes 78/78.
+  Smoke-tested via `next start` + curl across `/ar` and `/en` calculator,
+  legal, manifest, and service-worker routes — all 200.
 
-## Known issues / gaps
+## Known issues / gaps (deferred, real future phases)
 
-- Homepage search box is a plain `<form>` that routes to `/money` — it does
-  not yet do fuzzy matching across calculator names.
-- No visual regression / screenshot testing was performed (no headless
-  browser available in this environment) — verified via HTML output
-  (`lang`/`dir` attributes) and route status codes only.
-- No light/dark theme toggle UI — dark mode responds to
-  `prefers-color-scheme` only (no manual override switch yet).
-- `next.config.ts` intentionally has no custom `eslint` block; Next 16
-  deprecated that config key.
-- Middleware file is named `proxy.ts` per Next 16's renamed convention
-  (still functions as locale-detection middleware).
-- No manual QA on real mobile viewports; layouts use Tailwind responsive
-  utilities but weren't visually screenshotted.
-
-## Next-phase roadmap
-
-1. **Remaining calculators** listed as "coming soon": Zakat, VAT,
-   Installment, Car Loan, Insurance Comparison, Maintenance Cost, Coffee
-   Ratio, Recipe Scaling, Calorie, Protein, Travel Fuel, Luggage, Time Zone.
-2. **Live data integration**: wire `fetchLiveRates()` /
-   `fetchLiveGoldPrice()` to a real provider once an API key is available;
-   currently both are documented stubs that safely no-op.
-3. **PWA**: manifest, service worker, offline calculator access.
-4. **Ads**: replace `AdSlot` placeholder with a real network (keep the
-   placement rules documented in the component).
-5. **Accounts / saved calculations**: no auth or DB yet — would need a
-   backend decision.
-6. **AI layer**: none implemented; out of scope for this phase.
-7. **Homepage search**: real fuzzy search/autocomplete across the full
-   calculator registry (including "coming soon" items once built).
-8. **Theme toggle**: explicit light/dark switch in the header (tokens
-   already support it — see `app/globals.css`).
-9. Consider visual QA (Playwright/screenshots) once a browser tool is
-   available in the build environment.
+- **Shareable OG images**: not implemented. The brief allowed a simpler
+  printable/exportable summary as a fallback, but even that was deferred
+  in favor of finishing search/legal/PWA within this session — a genuine
+  gap versus the brief's Phase 3 ask. A `next/og` `ImageResponse` route at
+  `/api/og/[calculator]` reading result values from query params remains
+  the recommended approach; no new dependency needed.
+- **Live data integration**: `fetchLiveRates()` / `fetchLiveGoldPrice()`
+  remain documented no-op stubs — needs a real provider + API key.
+- **Real analytics/ads provider wiring**: `lib/analytics.ts` and `AdSlot`
+  are both structured for a one-line swap-in but nothing live is
+  connected (no keys available).
+- **Accounts / saved calculations**: no auth or DB — needs a backend
+  decision.
+- **AI layer**: none implemented; out of scope for this phase.
+- **GCC-market currency/locale expansion**: only `ar`/`en` locales and
+  SAR-centric defaults exist; expanding to other Gulf markets/currencies
+  as first-class locales is future work.
+- **Theme toggle**: still no explicit light/dark switch in the header;
+  dark mode responds to `prefers-color-scheme` only.
+- **List-based calculator forms** (Insurance Comparison, Maintenance
+  Cost, Recipe Scaling, Luggage) use in-memory add/remove state without
+  URL-based share state, unlike the scalar-input calculators — a
+  reasonable but real deviation from the flagship calculators' full
+  URL-state pattern, made to keep Phase 2 scope tractable.
+- No visual regression / screenshot testing (no headless browser
+  available in this environment) — verified via HTTP status codes,
+  `lang`/`dir` attributes, and manual code review of RTL/LTR usage only.
+- Accessibility: form inputs use the shared `Input`/`Select` components
+  which render proper `<label htmlFor>` associations, and Tailwind's
+  default focus rings are relied on for focus visibility — no dedicated
+  contrast audit tool was run in this environment.

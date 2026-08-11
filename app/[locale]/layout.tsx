@@ -25,6 +25,20 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
+export const metadata = {
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/icon-192.svg", sizes: "192x192", type: "image/svg+xml" },
+      { url: "/icon-512.svg", sizes: "512x512", type: "image/svg+xml" },
+    ],
+  },
+};
+
+export const viewport = {
+  themeColor: "#0f766e",
+};
+
 export default async function LocaleLayout({
   children,
   params,
@@ -50,6 +64,11 @@ export default async function LocaleLayout({
           <main className="flex-1">{children}</main>
           <SiteFooter locale={locale as Locale} />
         </NextIntlClientProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); }); }`,
+          }}
+        />
       </body>
     </html>
   );
