@@ -1,6 +1,6 @@
 import { FLAGSHIP_CALCULATORS, type CalculatorMeta } from "@/lib/calculatorRegistry";
 
-const RECENT_KEY = "hesabi:recentCalculators";
+const RECENT_KEY = "mihsab:recentCalculators";
 const MAX_RECENT = 6;
 
 // Static initial "popular" ordering — a reasonable editorial guess for

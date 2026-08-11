@@ -1,10 +1,10 @@
-# Hesabi — Project State
+# المِحساب (MIHSAB) — Project State
 
 _Last updated: 2026-08-11_
 
 ## What this is
 
-Hesabi (حسابي) is a bilingual (Arabic RTL / English) consumer calculator
+المِحساب / MIHSAB is a bilingual (Arabic RTL / English) consumer calculator
 platform built with Next.js 14+ App Router, TypeScript, and Tailwind CSS v4.
 Phases 1–6 are complete: foundation, all 21 calculators, PWA/sharing,
 search/legal/analytics scaffolding, shareable OG images, ads/affiliate
@@ -158,3 +158,19 @@ architecture, and a full production-readiness audit.
   environment) — verified via HTTP status codes, curl'd OG images,
   `lang`/`dir` attributes, computed WCAG contrast ratios, and manual code
   review.
+
+## Rebrand: Hesabi → المِحساب (MIHSAB)
+
+Full brand rename is complete: all copy (messages/*.json, `lib/seo.ts`,
+`lib/design-tokens.ts`, `lib/legalContent.ts`, footer/header, manifest, OG
+route, homepage metadata/JSON-LD), the `package.json` name, the
+`.env.example` placeholder domain (`mihsab.example`), and the contact email
+placeholder now read المِحساب / MIHSAB, with the tagline "احسبها... صح." /
+"Calculate it right." The old plain "H"-in-a-box placeholder logo was
+replaced with an original mark in `components/ui/Logo.tsx`: a single
+geometric stroke abstracting the bowl-and-tail shape of the Arabic letter ح
+that resolves into a checkmark tick, read as both "a deliberate, precise
+calculation" and "a correct result." It's used in the header, a small
+16px mark in the footer, and regenerated into `public/icon-192.svg` /
+`icon-512.svg` at matching proportions; the OG image route keeps a simple
+"M" letter-mark (satori-safe) rather than the full SVG path.

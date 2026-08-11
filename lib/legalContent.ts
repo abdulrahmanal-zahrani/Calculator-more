@@ -14,15 +14,15 @@ export const LEGAL_PAGES: LegalPageData[] = [
     slug: "privacy-policy",
     title: { ar: "سياسة الخصوصية", en: "Privacy Policy" },
     description: {
-      ar: "كيف تتعامل حسابي مع بياناتك.",
-      en: "How Hesabi handles your data.",
+      ar: "كيف تتعامل المِحساب مع بياناتك.",
+      en: "How MIHSAB handles your data.",
     },
     sections: {
       ar: [
         {
           heading: "نظرة عامة",
           body: [
-            "حسابي منصة حاسبات تعمل بالكامل داخل متصفحك. جميع عمليات الحساب تتم محليًا على جهازك — نحن لا نُرسل مدخلاتك (مثل راتبك أو وزن ذهبك أو ميزانية رحلتك) إلى أي خادم لتخزينها.",
+            "المِحساب منصة حاسبات تعمل بالكامل داخل متصفحك. جميع عمليات الحساب تتم محليًا على جهازك — نحن لا نُرسل مدخلاتك (مثل راتبك أو وزن ذهبك أو ميزانية رحلتك) إلى أي خادم لتخزينها.",
           ],
         },
         {
@@ -45,7 +45,7 @@ export const LEGAL_PAGES: LegalPageData[] = [
         {
           heading: "Overview",
           body: [
-            "Hesabi is a calculator platform that runs entirely in your browser. All calculations happen locally on your device — we do not send your inputs (like your salary, gold weight, or trip budget) to a server for storage.",
+            "MIHSAB is a calculator platform that runs entirely in your browser. All calculations happen locally on your device — we do not send your inputs (like your salary, gold weight, or trip budget) to a server for storage.",
           ],
         },
         {
@@ -69,17 +69,17 @@ export const LEGAL_PAGES: LegalPageData[] = [
   {
     slug: "terms-of-use",
     title: { ar: "شروط الاستخدام", en: "Terms of Use" },
-    description: { ar: "الشروط الخاصة باستخدام منصة حسابي.", en: "The terms governing your use of Hesabi." },
+    description: { ar: "الشروط الخاصة باستخدام منصة المِحساب.", en: "The terms governing your use of MIHSAB." },
     sections: {
       ar: [
         {
           heading: "قبول الشروط",
-          body: ["باستخدامك لموقع حسابي، فإنك توافق على هذه الشروط. إذا كنت لا توافق، يُرجى عدم استخدام الموقع."],
+          body: ["باستخدامك لموقع المِحساب، فإنك توافق على هذه الشروط. إذا كنت لا توافق، يُرجى عدم استخدام الموقع."],
         },
         {
           heading: "طبيعة الخدمة",
           body: [
-            "حسابي أداة مجانية توفّر حاسبات تقديرية لأغراض عامة (مالية، سيارات، نمط حياة، وسفر). النتائج المعروضة تقديرية وليست نصيحة مالية أو طبية أو شرعية أو قانونية رسمية.",
+            "المِحساب أداة مجانية توفّر حاسبات تقديرية لأغراض عامة (مالية، سيارات، نمط حياة، وسفر). النتائج المعروضة تقديرية وليست نصيحة مالية أو طبية أو شرعية أو قانونية رسمية.",
           ],
         },
         {
@@ -96,12 +96,12 @@ export const LEGAL_PAGES: LegalPageData[] = [
       en: [
         {
           heading: "Acceptance of terms",
-          body: ["By using Hesabi, you agree to these terms. If you do not agree, please do not use the site."],
+          body: ["By using MIHSAB, you agree to these terms. If you do not agree, please do not use the site."],
         },
         {
           heading: "Nature of the service",
           body: [
-            "Hesabi is a free tool providing general-purpose estimation calculators (money, cars, lifestyle, and travel). Results shown are estimates, not official financial, medical, religious, or legal advice.",
+            "MIHSAB is a free tool providing general-purpose estimation calculators (money, cars, lifestyle, and travel). Results shown are estimates, not official financial, medical, religious, or legal advice.",
           ],
         },
         {
@@ -126,7 +126,7 @@ export const LEGAL_PAGES: LegalPageData[] = [
         {
           heading: "أداة تقديرية",
           body: [
-            "جميع الحاسبات على منصة حسابي مصممة لأغراض تقديرية وتعليمية عامة فقط. النتائج مبنية على المعطيات التي تُدخلها والمعادلات المستخدمة في كل حاسبة، وقد لا تعكس بدقة وضعك الفعلي أو الشروط الرسمية لأي جهة.",
+            "جميع الحاسبات على منصة المِحساب مصممة لأغراض تقديرية وتعليمية عامة فقط. النتائج مبنية على المعطيات التي تُدخلها والمعادلات المستخدمة في كل حاسبة، وقد لا تعكس بدقة وضعك الفعلي أو الشروط الرسمية لأي جهة.",
           ],
         },
         {
@@ -140,7 +140,7 @@ export const LEGAL_PAGES: LegalPageData[] = [
         {
           heading: "An estimation tool",
           body: [
-            "Every calculator on Hesabi is designed for general estimation and educational purposes only. Results are based on the inputs you provide and the formulas used in each calculator, and may not precisely reflect your actual situation or any official party's terms.",
+            "Every calculator on MIHSAB is designed for general estimation and educational purposes only. Results are based on the inputs you provide and the formulas used in each calculator, and may not precisely reflect your actual situation or any official party's terms.",
           ],
         },
         {
@@ -161,7 +161,7 @@ export const LEGAL_PAGES: LegalPageData[] = [
         {
           heading: "ليست نصيحة مالية",
           body: [
-            "حاسبات القروض، الأقساط، الرواتب، الزكاة، وضريبة القيمة المضافة على حسابي مخصصة للتقدير العام فقط، وليست نصيحة استثمارية أو مالية أو ضريبية أو شرعية رسمية.",
+            "حاسبات القروض، الأقساط، الرواتب، الزكاة، وضريبة القيمة المضافة على المِحساب مخصصة للتقدير العام فقط، وليست نصيحة استثمارية أو مالية أو ضريبية أو شرعية رسمية.",
             "الأسعار والنسب المستخدمة (مثل أسعار الذهب أو أسعار الصرف) قد تكون قيمًا افتراضية أو يدوية الإدخال وليست بيانات سوق حية — تحقق دائمًا من المصدر الرسمي قبل اتخاذ أي قرار مالي.",
           ],
         },
@@ -176,7 +176,7 @@ export const LEGAL_PAGES: LegalPageData[] = [
         {
           heading: "Not financial advice",
           body: [
-            "The loan, installment, salary, zakat, and VAT calculators on Hesabi are for general estimation only, and are not official investment, financial, tax, or religious advice.",
+            "The loan, installment, salary, zakat, and VAT calculators on MIHSAB are for general estimation only, and are not official investment, financial, tax, or religious advice.",
             "Rates and prices used (e.g. gold prices or exchange rates) may be indicative defaults or manually entered, not live market data — always verify with an official source before making a financial decision.",
           ],
         },

@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Hesabi — حسابي",
-    short_name: "Hesabi",
-    description: "Bilingual everyday calculators for money, cars, lifestyle, and travel.",
+    name: "المِحساب — MIHSAB",
+    short_name: "MIHSAB",
+    description: "Bilingual everyday calculators for money, cars, lifestyle, and travel — احسبها... صح.",
     start_url: "/ar",
     display: "standalone",
     background_color: "#0b0f0e",

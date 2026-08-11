@@ -1,10 +1,10 @@
-// Minimal hand-rolled service worker for Hesabi.
+// Minimal hand-rolled service worker for MIHSAB.
 // Cache-first for static assets so calculators (all of which use manual/
 // static fallback data, never live network calls) keep working offline
 // once visited. We intentionally do NOT cache HTML navigations across
 // locales/routes broadly — only same-origin static assets — to avoid
 // serving stale calculator pages after a deploy.
-const CACHE_NAME = "hesabi-static-v1";
+const CACHE_NAME = "mihsab-static-v1";
 const STATIC_EXTENSIONS = [".js", ".css", ".svg", ".png", ".woff2", ".ico"];
 
 self.addEventListener("install", () => {

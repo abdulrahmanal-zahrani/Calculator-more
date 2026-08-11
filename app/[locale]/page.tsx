@@ -19,11 +19,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const l = locale as Locale;
-  const title = l === "ar" ? "حسابي — حاسبات يومية بسيطة وموثوقة" : "Hesabi — Simple, trustworthy everyday calculators";
+  const title = l === "ar" ? "المِحساب — حاسبات يومية بسيطة وموثوقة" : "MIHSAB — Simple, trustworthy everyday calculators";
   const description =
     l === "ar"
-      ? "منصة حسابي تجمع أهم الحاسبات اليومية: الذهب، الراتب، العملات، الوقود، والمزيد — بالعربية والإنجليزية."
-      : "Hesabi brings together the everyday calculators you need: gold, salary, currency, fuel, and more — in Arabic and English.";
+      ? "منصة المِحساب تجمع أهم الحاسبات اليومية: الذهب، الراتب، العملات، الوقود، والمزيد — بالعربية والإنجليزية."
+      : "MIHSAB brings together the everyday calculators you need: gold, salary, currency, fuel, and more — in Arabic and English.";
   return buildMetadata({ locale: l, path: "", title, description });
 }
 

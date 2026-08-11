@@ -211,9 +211,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
               fontWeight: 700,
             }}
           >
-            H
+            M
           </div>
-          <div style={{ display: "flex", fontSize: 30, fontWeight: 700, color: BRAND.card }}>Hesabi</div>
+          <div style={{ display: "flex", fontSize: 30, fontWeight: 700, color: BRAND.card }}>MIHSAB</div>
         </div>
 
         {/* Title */}
@@ -263,7 +263,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         </div>
 
         <div style={{ display: "flex", marginTop: 24, fontSize: 18, color: BRAND.accent }}>
-          hesabi.app
+          mihsab.app
         </div>
       </div>
     ),

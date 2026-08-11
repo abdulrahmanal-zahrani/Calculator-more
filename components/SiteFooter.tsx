@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n";
 import { CATEGORIES } from "@/lib/calculatorRegistry";
 import { LEGAL_PAGES } from "@/lib/legalContent";
+import Logo from "@/components/ui/Logo";
 
 export default async function SiteFooter({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: "footer" });
@@ -28,7 +29,7 @@ export default async function SiteFooter({ locale }: { locale: Locale }) {
           <div>
             <p className="text-sm font-semibold text-text">{t("contactTitle")}</p>
             <p className="mt-2 text-sm leading-relaxed text-text-muted">
-              {t("contactBody")} <span className="text-accent">hello@hesabi.example</span>
+              {t("contactBody")} <span className="text-accent">hello@mihsab.example</span>
             </p>
           </div>
           <div>
@@ -56,8 +57,8 @@ export default async function SiteFooter({ locale }: { locale: Locale }) {
             </ul>
           </div>
         </div>
-        <p className="mt-8 text-xs text-text-faint">
-          © {year} {locale === "ar" ? "حسابي" : "Hesabi"} — {t("rights")}
+        <p className="mt-8 flex items-center gap-2 text-xs text-text-faint">
+          <Logo size={16} />© {year} {locale === "ar" ? "المِحساب" : "MIHSAB"} — {t("rights")}
         </p>
       </div>
     </footer>

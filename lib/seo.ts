@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { Locale } from "@/i18n";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hesabi.example";
-const SITE_NAME = { ar: "حسابي", en: "Hesabi" };
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://mihsab.example";
+const SITE_NAME = { ar: "المِحساب", en: "MIHSAB" };
 
 export function buildMetadata({
   locale,
