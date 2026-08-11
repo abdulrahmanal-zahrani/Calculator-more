@@ -1,5 +1,3 @@
-"use client";
-
 import { FLAGSHIP_CALCULATORS, type CalculatorMeta } from "@/lib/calculatorRegistry";
 
 const RECENT_KEY = "hesabi:recentCalculators";
