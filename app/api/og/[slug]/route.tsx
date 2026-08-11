@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
 import { calculateGoldValue, type Karat } from "@/lib/calculators/gold";
-import { calculateV60Recipe } from "@/lib/calculators/v60";
+import { calculateCoffeeRecipe } from "@/lib/calculators/coffeeRecipe";
 import { calculateTripBudget } from "@/lib/calculators/tripBudget";
 import { calculateFuelCost } from "@/lib/calculators/fuel";
 import { calculateDiscount } from "@/lib/calculators/discount";
@@ -81,8 +81,8 @@ function buildData(slug: string, locale: Locale, sp: URLSearchParams): OgData | 
     }
     case "v60-calculator": {
       const coffee = num(sp, "coffee", 20);
-      const preset = (sp.get("preset") as "beginner" | "balanced" | "strong" | "light" | "custom") || "balanced";
-      const r = calculateV60Recipe({ coffeeGrams: coffee, preset });
+      const ratio = num(sp, "ratio", 16);
+      const r = calculateCoffeeRecipe({ method: "v60", solveFor: "water", coffeeGrams: coffee, ratio });
       return {
         title,
         primary: `${plain(r.waterGrams, "g")} ${locale === "ar" ? "ماء" : "water"}`,
