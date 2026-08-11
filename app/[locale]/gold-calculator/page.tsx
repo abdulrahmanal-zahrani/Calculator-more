@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
     webApplicationJsonLd({ locale: l, name: TITLE[l], description: DESCRIPTION[l], path: "/gold-calculator" }),
     breadcrumbJsonLd(l, [
       { name: l === "ar" ? "الرئيسية" : "Home", path: "" },
-      { name: l === "ar" ? "المال" : "Money", path: "/money" },
+      { name: l === "ar" ? "الفلوس" : "Money", path: "/money" },
       { name: TITLE[l], path: "/gold-calculator" },
     ]),
     faqJsonLd(

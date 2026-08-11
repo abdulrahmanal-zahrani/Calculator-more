@@ -2,7 +2,53 @@
 
 _Last updated: 2026-08-11_
 
-## Latest pass (this session)
+## Latest pass (this session) — V2 production-refinement
+
+Full audit written to `V2-AUDIT.md` (architecture, RTL/Arabic quality,
+mobile UX, SEO, performance, ads, a11y, placeholder-content grep — all
+evidence-based, no invented metrics). Six fixes implemented from the
+audit's findings:
+
+- **Homepage hero restructured**: brand → one-line value proposition →
+  "وش تبي تحسب؟" heading → `SearchBox` (reused, not rebuilt) → seven
+  shortcut chips linking straight to gold/salary/fuel/coffee/loan/
+  zakat/trip calculators. Kept tight, no new components.
+- **AI-marketing-speak grep**: zero matches for the listed phrases (and
+  a broader pass beyond the listed set) across all copy — nothing to
+  rewrite; the prior tanween-audit pass's copy already holds up.
+- **"Why MIHSAB" section redesigned**: "كل شيء محسوب." lead-in + five
+  short benefit labels (fast / clear / no signup / Arabic-first / clear
+  sources) replacing the old 3-bullet generic-SaaS framing.
+- **Ad placement fixed**: removed the site-wide top-of-`<main>` ad slot
+  from `app/[locale]/layout.tsx` (it sat above the homepage fold). The
+  homepage now places its one ad after hero/search/popular-calculators;
+  calculator pages keep their existing two correctly-placed slots
+  (in-content after result, lower-page after related calculators) in
+  `CalculatorShell`, unchanged. `AdSlot` already reserved `min-height` —
+  verified, no fix needed there.
+- **Category taxonomy aligned to spec**: `lib/calculatorRegistry.ts`
+  `CATEGORIES` renamed "المال" → "الفلوس" and "نمط الحياة" →
+  "القهوة والأكل" (English: "Coffee & Food"); updated the same hardcoded
+  strings across 26 calculator page/client files that had copy-pasted
+  category breadcrumb text instead of reading the registry. Also
+  relabeled the homepage "most used" claim ("الأكثر استخداماً") to
+  "الأكثر طلباً" ("most requested") since the underlying list
+  (`lib/trending.ts`) is an honest hardcoded editorial ordering, not
+  measured usage data — the old label overclaimed.
+- **Placeholder cleanup**: grepped the whole repo for
+  `example.com`/`.example`/`lorem`/`test company`/`dummy`/fake emails —
+  only the intentional, consistent `mihsab.example` placeholder domain
+  and one already-documented TODO in `lib/trending.ts` remain; nothing
+  else to fix.
+- Caught and fixed a transient bug introduced by the category
+  find-and-replace: `"المالي(ة)"` (financial) matched the `"المال"`
+  substring and got corrupted to `"الفلوسي(ة)"` in
+  `financialDisclaimer` copy (`messages/ar.json`,
+  `lib/legalContent.ts`) — corrected back to `"المالية"`, verified with
+  a follow-up grep.
+- `npm run build`, `npm run lint`, `npm test` (99/99) all pass.
+
+## Previous pass
 
 - **Salary calculator — GOSI system selector**: added
   `lib/config/gosiRules.ts` with two named, dated config objects for

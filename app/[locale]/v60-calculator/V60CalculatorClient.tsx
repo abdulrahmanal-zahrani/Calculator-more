@@ -59,7 +59,7 @@ const COPY = {
     pourSchedule: "جدول الصب",
     seconds: "ث",
     home: "الرئيسية",
-    category: "نمط الحياة",
+    category: "القهوة والأكل",
     howItWorks: [
       "اختر طريقة التحضير، وستُقترح نسبة ماء إلى قهوة مبدئية يمكنك تعديلها في أي وقت.",
       "عدّل القهوة أو الماء أو النسبة مباشرة — نعيد حساب القيمتين الأخريين تلقائياً.",
@@ -91,7 +91,7 @@ const COPY = {
     pourSchedule: "Pour schedule",
     seconds: "s",
     home: "Home",
-    category: "Lifestyle",
+    category: "Coffee & Food",
     howItWorks: [
       "Pick a brew method — we suggest a starting water-to-coffee ratio you can edit any time.",
       "Edit coffee, water, or ratio directly — we recalculate the other two live.",

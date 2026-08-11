@@ -37,7 +37,7 @@ const COPY = {
     perDay: "البروتين يومياً",
     perMeal: "البروتين لكل وجبة",
     home: "الرئيسية",
-    category: "نمط الحياة",
+    category: "القهوة والأكل",
     howItWorks: [
       "نستخدم مدى جرامات بروتين لكل كيلوجرام من وزن الجسم يعتمد على هدفك (حفاظ، خسارة دهون، أو بناء عضلات).",
       "نقسم إجمالي البروتين اليومي على عدد الوجبات لتوزيع متوازن.",
@@ -54,7 +54,7 @@ const COPY = {
     perDay: "Protein per day",
     perMeal: "Protein per meal",
     home: "Home",
-    category: "Lifestyle",
+    category: "Coffee & Food",
     howItWorks: [
       "We use a grams-per-kg-of-bodyweight range that depends on your goal (maintain, fat loss, or muscle building).",
       "We divide the total daily protein by your number of meals for balanced distribution.",

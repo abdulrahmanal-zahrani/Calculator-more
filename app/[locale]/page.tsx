@@ -2,11 +2,24 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import type { Locale } from "@/i18n";
 import { locales } from "@/i18n";
-import { CATEGORIES } from "@/lib/calculatorRegistry";
+import { CATEGORIES, FLAGSHIP_CALCULATORS } from "@/lib/calculatorRegistry";
 import { getPopularCalculators } from "@/lib/trending";
 import { buildMetadata, webApplicationJsonLd } from "@/lib/seo";
 import SearchBox from "@/components/SearchBox";
+import AdSlot from "@/components/ui/AdSlot";
 import type { Metadata } from "next";
+
+// Shortcut chips under the hero search — the seven calculators people land
+// on most; a fixed editorial pick, not a data-driven ranking.
+const SHORTCUT_SLUGS = [
+  "gold-calculator",
+  "salary-calculator",
+  "fuel-cost-calculator",
+  "v60-calculator",
+  "loan-calculator",
+  "zakat-calculator",
+  "trip-budget-calculator",
+];
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -45,6 +58,11 @@ export default async function HomePage({
   });
 
   const popular = getPopularCalculators();
+  const bySlug = new Map(FLAGSHIP_CALCULATORS.map((c) => [c.slug, c]));
+  const shortcuts = SHORTCUT_SLUGS.map((slug) => bySlug.get(slug)).filter(
+    (c): c is (typeof FLAGSHIP_CALCULATORS)[number] => Boolean(c)
+  );
+  const whyItems = [1, 2, 3, 4, 5] as const;
 
   return (
     <div>
@@ -53,12 +71,30 @@ export default async function HomePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="mx-auto max-w-4xl px-4 pb-12 pt-16 text-center sm:px-6 sm:pt-24">
+      {/* Hero: brand -> value proposition -> "what do you want to calculate?"
+          -> search -> shortcut chips. Kept tight — the calculators are the
+          product, not the hero. */}
+      <section className="mx-auto max-w-4xl px-4 pb-10 pt-16 text-center sm:px-6 sm:pt-24">
         <h1 className="text-4xl font-bold tracking-tight text-text sm:text-5xl">{brand("name")}</h1>
-        <p className="mt-3 text-lg text-text-muted">{brand("tagline")}</p>
+        <p className="mt-2 text-lg text-text-muted">{brand("tagline")}</p>
+        <p className="mt-1 text-base text-text-faint">{t("valueProposition")}</p>
 
-        <div className="mt-8">
+        <h2 className="mt-8 text-lg font-semibold text-text">{t("searchHeading")}</h2>
+        <div className="mt-4">
           <SearchBox locale={l} placeholder={t("searchPlaceholder")} variant="hero" />
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+          {shortcuts.map((calc) => (
+            <Link
+              key={calc.slug}
+              href={`/${l}/${calc.slug}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-bg-elevated px-3.5 py-1.5 text-sm text-text transition-colors hover:border-accent hover:text-accent"
+            >
+              <span>{calc.icon}</span>
+              <span>{calc.name[l]}</span>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -79,6 +115,12 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* Ad slot: after hero/search/popular, before the rest of the page —
+          never above the fold. */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <AdSlot variant="inline" label="Advertisement" />
+      </section>
+
       <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <h2 className="text-xl font-semibold text-text">{t("categoriesTitle")}</h2>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -96,20 +138,14 @@ export default async function HomePage({
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <h2 className="text-xl font-semibold text-text">{t("whyTitle")}</h2>
-        <div className="mt-5 grid gap-6 sm:grid-cols-3">
-          <div>
-            <p className="font-semibold text-text">{t("why1Title")}</p>
-            <p className="mt-1 text-sm text-text-muted">{t("why1Body")}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-text">{t("why2Title")}</p>
-            <p className="mt-1 text-sm text-text-muted">{t("why2Body")}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-text">{t("why3Title")}</p>
-            <p className="mt-1 text-sm text-text-muted">{t("why3Body")}</p>
-          </div>
+        <h2 className="text-xl font-semibold text-text">{t("whyLead")}</h2>
+        <div className="mt-5 grid gap-6 sm:grid-cols-3 lg:grid-cols-5">
+          {whyItems.map((n) => (
+            <div key={n}>
+              <p className="font-semibold text-text">{t(`why${n}Title` as "why1Title")}</p>
+              <p className="mt-1 text-sm text-text-muted">{t(`why${n}Body` as "why1Body")}</p>
+            </div>
+          ))}
         </div>
       </section>
     </div>

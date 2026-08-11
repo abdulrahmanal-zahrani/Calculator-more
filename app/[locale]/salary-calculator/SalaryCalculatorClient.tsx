@@ -27,7 +27,7 @@ const COPY = {
     gross: "إجمالي الراتب",
     annual: "الصافي السنوي",
     home: "الرئيسية",
-    category: "المال",
+    category: "الفلوس",
     advanced: "إعدادات متقدمة",
     gosiSystem: "نظام التأمينات",
     gosiNew: "الجديد",

@@ -41,7 +41,7 @@ const COPY = {
     tdee: "إجمالي الطاقة اليومية (TDEE)",
     range: "المدى المقترح",
     home: "الرئيسية",
-    category: "نمط الحياة",
+    category: "القهوة والأكل",
     howItWorks: [
       "نحسب BMR بمعادلة Mifflin-St Jeor باستخدام الوزن والطول والعمر والجنس.",
       "نضرب BMR في معامل النشاط للحصول على TDEE (إجمالي الطاقة اليومية).",
@@ -68,7 +68,7 @@ const COPY = {
     tdee: "Total Daily Energy (TDEE)",
     range: "Suggested range",
     home: "Home",
-    category: "Lifestyle",
+    category: "Coffee & Food",
     howItWorks: [
       "We compute BMR using the Mifflin-St Jeor equation from weight, height, age, and sex.",
       "We multiply BMR by an activity factor to get TDEE (Total Daily Energy Expenditure).",
