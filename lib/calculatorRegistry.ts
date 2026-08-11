@@ -89,6 +89,136 @@ export const FLAGSHIP_CALCULATORS: CalculatorMeta[] = [
       en: "Plan your next trip's budget: flights, stay, food, and activities.",
     },
   },
+  {
+    slug: "zakat-calculator",
+    category: "money",
+    icon: "🕌",
+    name: { ar: "حاسبة الزكاة", en: "Zakat Calculator" },
+    description: {
+      ar: "احسب زكاة المال والذهب والفضة والاستثمارات وفق قواعد عامة.",
+      en: "Calculate zakat on cash, gold, silver, and investments using general rules.",
+    },
+  },
+  {
+    slug: "vat-calculator",
+    category: "money",
+    icon: "🧾",
+    name: { ar: "حاسبة ضريبة القيمة المضافة", en: "VAT Calculator" },
+    description: {
+      ar: "أضف أو استخرج ضريبة القيمة المضافة بأي نسبة، بما في ذلك نسبة زاتكا 15%.",
+      en: "Add or reverse-calculate VAT at any rate, including the 15% ZATCA rate.",
+    },
+  },
+  {
+    slug: "installment-calculator",
+    category: "money",
+    icon: "📆",
+    name: { ar: "حاسبة الأقساط", en: "Installment Calculator" },
+    description: {
+      ar: "قسّط أي سعر شراء على دفعات شهرية مع الدفعة المقدمة والرسوم.",
+      en: "Split any purchase price into monthly installments with down payment and fees.",
+    },
+  },
+  {
+    slug: "car-loan-calculator",
+    category: "cars",
+    icon: "🚗",
+    name: { ar: "حاسبة تمويل السيارة", en: "Car Loan Calculator" },
+    description: {
+      ar: "احسب القسط الشهري وإجمالي تكلفة تمويل سيارتك الجديدة.",
+      en: "Calculate the monthly payment and total cost of financing your car.",
+    },
+  },
+  {
+    slug: "insurance-comparison-calculator",
+    category: "cars",
+    icon: "🛡️",
+    name: { ar: "مقارنة التأمين", en: "Insurance Comparison Calculator" },
+    description: {
+      ar: "قارن بين عروض تأمين السيارات من حيث التكلفة الفعلية السنوية.",
+      en: "Compare car insurance quotes by effective annual cost.",
+    },
+  },
+  {
+    slug: "maintenance-cost-calculator",
+    category: "cars",
+    icon: "🔧",
+    name: { ar: "حاسبة تكلفة الصيانة", en: "Maintenance Cost Calculator" },
+    description: {
+      ar: "قدّر تكلفة صيانة سيارتك السنوية حسب المسافة المقطوعة.",
+      en: "Estimate your car's annual maintenance cost based on mileage.",
+    },
+  },
+  {
+    slug: "coffee-ratio-calculator",
+    category: "lifestyle",
+    icon: "🫘",
+    name: { ar: "حاسبة نسبة القهوة", en: "Coffee Ratio Calculator" },
+    description: {
+      ar: "نسبة القهوة والماء لطرق تحضير مختلفة: فرنش برس، إيروبرس، كيمكس، وكولد برو.",
+      en: "Coffee-to-water ratios for French Press, AeroPress, Chemex, and Cold Brew.",
+    },
+  },
+  {
+    slug: "recipe-scaling-calculator",
+    category: "lifestyle",
+    icon: "🍳",
+    name: { ar: "حاسبة تحجيم الوصفات", en: "Recipe Scaling Calculator" },
+    description: {
+      ar: "كبّر أو صغّر أي وصفة حسب عدد الحصص المطلوبة.",
+      en: "Scale any recipe up or down to the number of servings you need.",
+    },
+  },
+  {
+    slug: "calorie-calculator",
+    category: "lifestyle",
+    icon: "🔥",
+    name: { ar: "حاسبة السعرات الحرارية", en: "Calorie Calculator" },
+    description: {
+      ar: "احسب احتياجك اليومي من السعرات الحرارية حسب هدفك.",
+      en: "Estimate your daily calorie needs based on your goal.",
+    },
+  },
+  {
+    slug: "protein-calculator",
+    category: "lifestyle",
+    icon: "🥩",
+    name: { ar: "حاسبة البروتين", en: "Protein Calculator" },
+    description: {
+      ar: "احسب احتياجك اليومي من البروتين حسب وزنك ونشاطك وهدفك.",
+      en: "Estimate your daily protein needs based on weight, activity, and goal.",
+    },
+  },
+  {
+    slug: "travel-fuel-calculator",
+    category: "travel",
+    icon: "🛣️",
+    name: { ar: "حاسبة وقود الرحلة", en: "Travel Fuel Calculator" },
+    description: {
+      ar: "قدّر تكلفة الوقود لرحلة برية طويلة والتكلفة لكل شخص.",
+      en: "Estimate fuel cost for a long road trip and cost per traveler.",
+    },
+  },
+  {
+    slug: "luggage-calculator",
+    category: "travel",
+    icon: "🧳",
+    name: { ar: "حاسبة وزن الأمتعة", en: "Luggage Calculator" },
+    description: {
+      ar: "تأكد من وزن حقائبك مقابل الوزن المسموح به قبل السفر.",
+      en: "Check your bags' weight against your allowance before you fly.",
+    },
+  },
+  {
+    slug: "time-zone-calculator",
+    category: "travel",
+    icon: "🕒",
+    name: { ar: "حاسبة فروق التوقيت", en: "Time Zone Calculator" },
+    description: {
+      ar: "قارن التوقيت بين الرياض ومدن العالم الرئيسية بدقة تراعي التوقيت الصيفي.",
+      en: "Compare the time between Riyadh and major world cities, DST-aware.",
+    },
+  },
 ];
 
 export const CATEGORIES: { slug: Category; name: { ar: string; en: string }; description: { ar: string; en: string } }[] = [
@@ -114,21 +244,9 @@ export const CATEGORIES: { slug: Category; name: { ar: string; en: string }; des
   },
 ];
 
-export const COMING_SOON: { category: Category; name: { ar: string; en: string }; description: { ar: string; en: string } }[] = [
-  { category: "money", name: { ar: "حاسبة الزكاة", en: "Zakat Calculator" }, description: { ar: "احسب زكاة المال والذهب.", en: "Calculate zakat on wealth and gold." } },
-  { category: "money", name: { ar: "حاسبة ضريبة القيمة المضافة", en: "VAT Calculator" }, description: { ar: "أضف أو استخرج ضريبة القيمة المضافة.", en: "Add or extract VAT from a price." } },
-  { category: "money", name: { ar: "حاسبة الأقساط", en: "Installment Calculator" }, description: { ar: "قسّط أي مبلغ على دفعات.", en: "Split any amount into installments." } },
-  { category: "cars", name: { ar: "تمويل السيارة", en: "Car Loan Calculator" }, description: { ar: "احسب قسط تمويل سيارتك.", en: "Estimate your car finance payment." } },
-  { category: "cars", name: { ar: "مقارنة التأمين", en: "Insurance Comparison" }, description: { ar: "قارن بين عروض تأمين السيارات.", en: "Compare car insurance quotes." } },
-  { category: "cars", name: { ar: "تكلفة الصيانة", en: "Maintenance Cost" }, description: { ar: "قدّر تكلفة صيانة سيارتك السنوية.", en: "Estimate your car's annual maintenance cost." } },
-  { category: "lifestyle", name: { ar: "نسبة القهوة", en: "Coffee Ratio" }, description: { ar: "نسب قهوة لطرق تحضير أخرى.", en: "Coffee ratios for other brew methods." } },
-  { category: "lifestyle", name: { ar: "تحجيم الوصفات", en: "Recipe Scaling" }, description: { ar: "كبّر أو صغّر أي وصفة.", en: "Scale any recipe up or down." } },
-  { category: "lifestyle", name: { ar: "حاسبة السعرات", en: "Calorie Calculator" }, description: { ar: "احسب احتياجك اليومي من السعرات.", en: "Estimate your daily calorie needs." } },
-  { category: "lifestyle", name: { ar: "حاسبة البروتين", en: "Protein Calculator" }, description: { ar: "احسب احتياجك اليومي من البروتين.", en: "Estimate your daily protein needs." } },
-  { category: "travel", name: { ar: "وقود الرحلة", en: "Travel Fuel Calculator" }, description: { ar: "قدّر تكلفة الوقود لرحلة برية طويلة.", en: "Estimate fuel cost for a long road trip." } },
-  { category: "travel", name: { ar: "وزن الأمتعة", en: "Luggage Calculator" }, description: { ar: "تأكد من وزن حقيبتك قبل السفر.", en: "Check your luggage weight before you fly." } },
-  { category: "travel", name: { ar: "فروق التوقيت", en: "Time Zone Calculator" }, description: { ar: "قارن التوقيت بين مدينتين.", en: "Compare the time between two cities." } },
-];
+// All previously "coming soon" calculators have shipped (Phase 2) — kept as
+// an empty, typed list so category pages / future additions keep working.
+export const COMING_SOON: { category: Category; name: { ar: string; en: string }; description: { ar: string; en: string } }[] = [];
 
 export function getCalculatorsByCategory(category: Category): CalculatorMeta[] {
   return FLAGSHIP_CALCULATORS.filter((c) => c.category === category);
