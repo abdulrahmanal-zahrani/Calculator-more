@@ -110,6 +110,16 @@ export const FLAGSHIP_CALCULATORS: CalculatorMeta[] = [
     },
   },
   {
+    slug: "bonus-calculator",
+    category: "money",
+    icon: "🎯",
+    name: { ar: "حاسبة البونص السنوي", en: "Annual Bonus Calculator" },
+    description: {
+      ar: "أدخل طريقة حساب البونص في شركتك — التقييم، المعامل، والاستحقاق — واحسب البونص المتوقع.",
+      en: "Tell us how your company calculates bonuses — rating, multiplier, and eligibility — and get your estimated bonus.",
+    },
+  },
+  {
     slug: "installment-calculator",
     category: "money",
     icon: "📆",

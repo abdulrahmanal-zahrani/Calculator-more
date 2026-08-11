@@ -2,7 +2,98 @@
 
 _Last updated: 2026-08-11_
 
-## Latest pass (this session) — V2 verification pass
+## Latest pass (this session) — Annual Bonus Calculator
+
+Added a new calculator, **حاسبة البونص السنوي / Annual Bonus Calculator**,
+at `/bonus-calculator` (category الفلوس/Money — 22nd calculator). Deliberately
+does NOT assume "salary × bonus %": the model is Performance Rating →
+company-specific Bonus Multiplier (via a matrix the employee defines) →
+applied to a Target Bonus (% of salary / number-of-salaries / fixed amount)
+→ optionally prorated for partial-year eligibility.
+
+- **Engine** (`lib/calculators/bonus.ts`, `calculateBonus()`): resolves
+  annual base salary (monthly-or-annual auto-convert), target bonus amount
+  (3 methods), a performance multiplier from a rating→multiplier matrix
+  (bracket/floor-to-nearest-defined-threshold-at-or-below by default, or
+  linear interpolation between neighboring rows when enabled — the choice
+  is documented in a code comment and surfaced in the UI's "كيف حسبناها؟"
+  section), times optional secondary factors (company/department/extra,
+  each defaulting to 100% i.e. no-op), times a proration factor
+  (full year / months / custom %). Returns a structured breakdown
+  (`annualBaseSalary`, `targetBonusAmount`, `performanceMultiplier`,
+  `prorationFactor`, `estimatedBonus`, `totalAnnualCompensation`,
+  `monthlyEquivalent`). Validates and throws on: negative salary, rating
+  outside the selected scale, duplicate matrix rating thresholds, negative
+  multipliers. `dedupeAndSortMatrix()` exported for UI-side dedup. All
+  parsing goes through `lib/numeric.ts`; all rounding via the same
+  round-to-2-decimals convention as `salary.ts`/`gold.ts`.
+- **Tests** (`lib/calculators/__tests__/bonus.test.ts`, 12 tests, all
+  passing): the 7 spec cases plus 4 validation edge cases plus a
+  matrix-dedup unit test. Computed results: (1) 120,000 salary/15%
+  target/rating 4-of-5 → 18,000 SAR exactly. (2) rating 4.2-of-5
+  interpolated between 4→100%/5→150% → multiplier 1.10 exactly, bonus
+  19,800 SAR exactly. (3) 10-point scale, rating 8/10 on a custom matrix
+  → multiplier 1.0, bonus 10,000 SAR. (4) 100-point scale, rating 85/100
+  → floor-bracket resolves to the 80-threshold row's 100% multiplier,
+  bonus 10,000 SAR. (5) number-of-salaries: 10,000 monthly × 1.5 salaries
+  × 100% → 15,000 SAR exactly. (6) partial year: 24,000 fixed target ×
+  100% × 6/12 months → 12,000 SAR exactly. (7) Arabic numerals
+  "١٢٠٠٠٠"/"٤٫٢" parse via `normalizeNumericInput` to 120000/4.2 and
+  reproduce case 2's 19,800 SAR result.
+- **UI** (`app/[locale]/bonus-calculator/{page.tsx,BonusCalculatorClient.tsx}`):
+  simple mode by default (salary+period, rating-scale preset, rating,
+  target-bonus method) using an automatic linear 2-point matrix
+  (min→0%, max→100%, interpolated) so simple mode needs no matrix editing.
+  Advanced mode is a collapsible `<details>` ("تفاصيل نظام شركتك", same
+  pattern as V60's advanced options) containing: a custom-scale min/max
+  toggle, an add/remove bonus-matrix row builder (seeded with an editable
+  1→0%/2→50%/3→75%/4→100%/5→150%-equivalent example scaled to the chosen
+  rating range) with a "use custom matrix" checkbox and interpolation
+  toggle, optional company/department/extra factor inputs, and a
+  full-year/months/custom-% proration selector. Result-first layout via
+  `ResultCard` + breakdown `<dl>` + an expandable "كيف حسبناها؟" showing
+  the substituted formula. Local preset save/load ("نظام شركتي") via a
+  new `lib/bonusPresets.ts`, mirroring `lib/trending.ts`'s guarded
+  `typeof window` + try/catch localStorage pattern — only the company's
+  calculation structure (matrix, target method, factors, scale) persists,
+  never the employee's salary or rating. Share via the existing
+  `ShareBar`/`CalculatorShell` — `CalculatorShell` gained an optional
+  `shareTitle` prop (defaults to the calculator name, as before) so this
+  calculator can pass a custom top-line-numbers-only share summary
+  without a company-identifying matrix. Scalar inputs (salary, period,
+  rating scale, rating, target-bonus method/value) sync to the URL query
+  string like the scalar-input calculators; the bonus matrix itself is
+  kept in-memory-only, consistent with the existing documented gap for
+  list-based calculator forms (Insurance/Maintenance/Recipe/Luggage).
+- **Salary ↔ Bonus integration**: Salary calculator gained a "احسب
+  البونص" link passing its computed annual gross salary as
+  `?annualSalary=`; the bonus calculator reads that param on mount to
+  prefill salary (annual mode) when no `salary` param is already present.
+  Bonus calculator has a reciprocal "احسب راتبك" link back to
+  `/salary-calculator`. No other change to the salary calculator's logic.
+- **Registry/SEO/search**: added to `lib/calculatorRegistry.ts`
+  (`bonus-calculator`, category `money`) and `lib/searchIndex.ts`
+  (بونص/bonus/مكافأة/تقييم أداء/performance rating keywords) — related
+  calculators and category-page listing are automatic via the existing
+  registry-driven mechanisms (`CalculatorShell`'s same-category related
+  links, `getCalculatorsByCategory`), no extra wiring needed. SEO via
+  `buildMetadata`/`webApplicationJsonLd`/`breadcrumbJsonLd` in
+  `lib/seo.ts`, matching every other calculator page exactly. No OG image
+  variant added (matches the existing "15 of 21 calculators have no OG
+  image" gap, not one of the 6 flagship OG calculators).
+- **i18n**: per existing convention (confirmed by inspection —
+  `messages/ar.json`/`messages/en.json` hold only site-wide nav/home
+  strings; all 21 existing calculators keep their copy in a local `COPY`
+  object inside their client component, not in the messages files), the
+  bonus calculator's strings live in `BonusCalculatorClient.tsx`'s own
+  `COPY` object, matching every other calculator rather than the literal
+  (but not actually-followed-anywhere) messages-file convention described
+  in the original brief.
+- `npm run build`, `npm run lint`, `npm test` (111/111) all pass. Smoke
+  tested `/ar/bonus-calculator` and `/en/bonus-calculator` via
+  `next start` + curl: both return 200, `dir="rtl"`/`dir="ltr"` correct.
+
+## Previous pass — V2 verification pass
 
 Full verification sweep across the six areas named in the brief (calculator
 correctness, SEO metadata, internal linking, performance, error/empty

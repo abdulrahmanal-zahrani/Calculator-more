@@ -24,6 +24,8 @@ interface CalculatorShellProps {
   faq: FAQItem[];
   disclaimer: string;
   shareUrl: string;
+  /** Optional custom share text (e.g. a result summary). Defaults to the calculator's name. */
+  shareTitle?: string;
   t: { calculate: string; howItWorks: string; faq: string; related: string; disclaimer: string; share: string; copyLink: string; copied: string };
 }
 
@@ -38,6 +40,7 @@ export default function CalculatorShell({
   faq,
   disclaimer,
   shareUrl,
+  shareTitle,
   t,
 }: CalculatorShellProps) {
   const related = getCalculatorsByCategory(meta.category).filter((c) => c.slug !== meta.slug);
@@ -83,7 +86,7 @@ export default function CalculatorShell({
       <div className="mt-6">
         <ShareBar
           url={shareUrl}
-          title={meta.name[locale]}
+          title={shareTitle ?? meta.name[locale]}
           shareLabel={t.share}
           copyLabel={t.copyLink}
           copiedLabel={t.copied}

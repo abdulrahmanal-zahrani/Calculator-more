@@ -13,6 +13,7 @@ export const SEARCH_KEYWORDS: Record<string, string[]> = {
   "loan-calculator": ["قرض", "loan", "تمويل", "financing", "قسط", "installment"],
   "vat-calculator": ["ضريبة", "vat", "قيمة مضافة", "tax", "زاتكا", "zatca"],
   "installment-calculator": ["قسط", "installment", "تقسيط", "دفعة"],
+  "bonus-calculator": ["بونص", "bonus", "مكافأة", "تقييم أداء", "performance rating", "مكافأة نهاية السنة"],
   "fuel-cost-calculator": ["وقود", "fuel", "بنزين", "gas", "petrol", "سيارة", "car"],
   "car-loan-calculator": ["سيارة", "car", "تمويل سيارة", "auto loan", "قرض سيارة"],
   "insurance-comparison-calculator": ["تأمين", "insurance", "سيارة", "car", "بوليصة", "policy"],

@@ -3,6 +3,7 @@ import { normalizeNumericInput } from "@/lib/numeric";
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import CalculatorShell from "@/components/calculator/CalculatorShell";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
@@ -42,6 +43,7 @@ const COPY = {
       "نضرب الصافي الشهري في 12 للحصول على الصافي السنوي.",
     ],
     disclaimer: "هذه الحاسبة لأغراض التقدير العام فقط وليست استشارة رسمية للرواتب أو استحقاقات نظام العمل. نِسب التأمينات الاجتماعية أرقام مرجعية تقريبية — تحقق من النسبة الحالية من موقع التأمينات الاجتماعية (GOSI) قبل الاعتماد عليها.",
+    goToBonus: "احسب البونص",
     faq: [
       {
         question: "هل تحتسب الحاسبة التأمينات الاجتماعية (GOSI) تلقائياً؟",
@@ -79,6 +81,7 @@ const COPY = {
       "We multiply net monthly by 12 to get the net annual salary.",
     ],
     disclaimer: "This calculator is for general estimation only and is not official payroll or labor-law advice. GOSI rates are approximate reference figures — verify the current rate on GOSI's website before relying on them.",
+    goToBonus: "Calculate your bonus",
     faq: [
       {
         question: "Does this calculator auto-calculate GOSI social insurance?",
@@ -232,6 +235,14 @@ export default function SalaryCalculatorClient({ locale }: { locale: Locale }) {
               </>
             )}
           </dl>
+          <p className="text-sm">
+            <Link
+              href={`/${locale}/bonus-calculator?annualSalary=${Math.round(result.grossMonthly * 12 * 100) / 100}`}
+              className="text-accent hover:underline"
+            >
+              {c.goToBonus} ←
+            </Link>
+          </p>
         </>
       }
       howItWorks={
