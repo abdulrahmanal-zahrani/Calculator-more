@@ -1,0 +1,117 @@
+import { getTranslations } from "next-intl/server";
+import Link from "next/link";
+import type { Locale } from "@/i18n";
+import { locales } from "@/i18n";
+import { CATEGORIES } from "@/lib/calculatorRegistry";
+import { getPopularCalculators } from "@/lib/trending";
+import { buildMetadata, webApplicationJsonLd } from "@/lib/seo";
+import SearchBox from "@/components/SearchBox";
+import type { Metadata } from "next";
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const l = locale as Locale;
+  const title = l === "ar" ? "حسابي — حاسبات يومية بسيطة وموثوقة" : "Hesabi — Simple, trustworthy everyday calculators";
+  const description =
+    l === "ar"
+      ? "منصة حسابي تجمع أهم الحاسبات اليومية: الذهب، الراتب، العملات، الوقود، والمزيد — بالعربية والإنجليزية."
+      : "Hesabi brings together the everyday calculators you need: gold, salary, currency, fuel, and more — in Arabic and English.";
+  return buildMetadata({ locale: l, path: "", title, description });
+}
+
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const l = locale as Locale;
+  const t = await getTranslations({ locale: l, namespace: "home" });
+  const brand = await getTranslations({ locale: l, namespace: "brand" });
+
+  const jsonLd = webApplicationJsonLd({
+    locale: l,
+    name: brand("name"),
+    description: brand("tagline"),
+    path: "",
+  });
+
+  const popular = getPopularCalculators();
+
+  return (
+    <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <section className="mx-auto max-w-4xl px-4 pb-12 pt-16 text-center sm:px-6 sm:pt-24">
+        <h1 className="text-4xl font-bold tracking-tight text-text sm:text-5xl">{brand("name")}</h1>
+        <p className="mt-3 text-lg text-text-muted">{brand("tagline")}</p>
+
+        <div className="mt-8">
+          <SearchBox locale={l} placeholder={t("searchPlaceholder")} variant="hero" />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <h2 className="text-xl font-semibold text-text">{t("popularTitle")}</h2>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {popular.map((calc) => (
+            <Link
+              key={calc.slug}
+              href={`/${l}/${calc.slug}`}
+              className="group flex flex-col gap-2 rounded-[var(--radius-lg)] border border-border bg-bg-elevated p-5 transition-colors hover:border-accent hover:shadow-[var(--shadow-md)]"
+            >
+              <span className="text-3xl">{calc.icon}</span>
+              <span className="font-semibold text-text group-hover:text-accent">{calc.name[l]}</span>
+              <span className="text-sm text-text-muted">{calc.description[l]}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <h2 className="text-xl font-semibold text-text">{t("categoriesTitle")}</h2>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {CATEGORIES.map((cat) => (
+            <Link
+              key={cat.slug}
+              href={`/${l}/${cat.slug}`}
+              className="rounded-[var(--radius-lg)] bg-bg-subtle p-5 transition-colors hover:bg-accent-soft"
+            >
+              <span className="font-semibold text-text">{cat.name[l]}</span>
+              <p className="mt-1 text-sm text-text-muted">{cat.description[l]}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <h2 className="text-xl font-semibold text-text">{t("whyTitle")}</h2>
+        <div className="mt-5 grid gap-6 sm:grid-cols-3">
+          <div>
+            <p className="font-semibold text-text">{t("why1Title")}</p>
+            <p className="mt-1 text-sm text-text-muted">{t("why1Body")}</p>
+          </div>
+          <div>
+            <p className="font-semibold text-text">{t("why2Title")}</p>
+            <p className="mt-1 text-sm text-text-muted">{t("why2Body")}</p>
+          </div>
+          <div>
+            <p className="font-semibold text-text">{t("why3Title")}</p>
+            <p className="mt-1 text-sm text-text-muted">{t("why3Body")}</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

@@ -1,0 +1,56 @@
+{
+  "brand": {
+    "name": "Hesabi",
+    "tagline": "Everyday calculations, made simple."
+  },
+  "nav": {
+    "home": "Home",
+    "money": "Money",
+    "cars": "Cars",
+    "lifestyle": "Lifestyle",
+    "travel": "Travel",
+    "switchLocale": "العربية"
+  },
+  "home": {
+    "searchPlaceholder": "What do you want to calculate?",
+    "popularTitle": "Popular Calculators",
+    "categoriesTitle": "Categories",
+    "whyTitle": "Why Hesabi?",
+    "why1Title": "Accurate & Trustworthy",
+    "why1Body": "Every calculator is built on clear, tested formulas.",
+    "why2Title": "Truly Bilingual",
+    "why2Body": "A native Arabic experience — not just a translation.",
+    "why3Title": "Privacy First",
+    "why3Body": "Calculations run in your browser — nothing is stored."
+  },
+  "calculator": {
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": "Result",
+    "breakdown": "Breakdown",
+    "howItWorks": "How it works",
+    "faq": "Frequently asked questions",
+    "related": "Related calculators",
+    "disclaimer": "Disclaimer",
+    "share": "Share",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "comingSoon": "Coming soon"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "about": "Hesabi is a bilingual platform for everyday calculation tools.",
+    "aboutTitle": "About",
+    "aboutBody": "Hesabi is an independent, bilingual (Arabic/English) calculator platform covering money, cars, lifestyle, and travel. All calculations run in your browser.",
+    "contactTitle": "Contact",
+    "contactBody": "Questions or feedback? Reach us at",
+    "legalTitle": "Legal",
+    "categoriesTitle": "Categories",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "disclaimer": "General Disclaimer",
+    "financialDisclaimer": "Financial Disclaimer",
+    "healthDisclaimer": "Health Disclaimer",
+    "dataSources": "Data Sources"
+  }
+}
