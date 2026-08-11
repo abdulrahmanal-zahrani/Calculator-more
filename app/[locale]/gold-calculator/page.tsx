@@ -22,7 +22,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const l = locale as Locale;
-  return buildMetadata({ locale: l, path: "/gold-calculator", title: TITLE[l], description: DESCRIPTION[l] });
+  return buildMetadata({
+    locale: l,
+    path: "/gold-calculator",
+    title: TITLE[l],
+    description: DESCRIPTION[l],
+    ogImageQuery: "weight=10&karat=21&price=300&making=10&mode=buy",
+  });
 }
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {

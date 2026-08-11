@@ -11,7 +11,9 @@
   /* Text */
   --color-text: #191713;
   --color-text-muted: #63594b;
-  --color-text-faint: #948c7d;
+  /* Was #948c7d — bumped for ~4.5:1 contrast against bg/bg-elevated (WCAG AA
+     body text); see PROJECT-STATE.md accessibility notes. */
+  --color-text-faint: #726b5a;
 
   /* Brand accent: refined teal */
   --color-accent: #0f6f66;
@@ -44,7 +46,8 @@
 
     --color-text: #f3f1ec;
     --color-text-muted: #b7b0a2;
-    --color-text-faint: #837a6c;
+    /* Was #837a6c — same AA contrast fix as light mode. */
+    --color-text-faint: #93897a;
 
     --color-accent: #35a596;
     --color-accent-hover: #4bbcac;
@@ -107,4 +110,18 @@ body {
 ::selection {
   background: var(--color-accent-soft);
   color: var(--color-accent);
+}
+
+/* Respect the user's reduced-motion preference globally: neutralize any
+   transition/animation (Tailwind's transition-* utilities included) instead
+   of relying on every component to guard itself individually. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -9,15 +9,28 @@ export function buildMetadata({
   path,
   title,
   description,
+  ogImageQuery,
 }: {
   locale: Locale;
   path: string; // e.g. "/gold-calculator", "" for home
   title: string;
   description: string;
+  /**
+   * Query string (without leading "?") of extra params to forward to the
+   * `/api/og/[slug]` route, e.g. "weight=10&karat=21". Pass the calculator's
+   * slug-derived route segment (path without the leading "/") as the OG
+   * route's [slug]; omit to fall back to the default OG/Twitter card (no
+   * generated image).
+   */
+  ogImageQuery?: string;
 }): Metadata {
   const canonical = `${SITE_URL}/${locale}${path}`;
   const arUrl = `${SITE_URL}/ar${path}`;
   const enUrl = `${SITE_URL}/en${path}`;
+
+  const ogImage = ogImageQuery
+    ? [{ url: `${SITE_URL}/api/og${path}?locale=${locale}&${ogImageQuery}`, width: 1200, height: 630, alt: title }]
+    : undefined;
 
   return {
     title: `${title} | ${SITE_NAME[locale]}`,
@@ -33,11 +46,13 @@ export function buildMetadata({
       siteName: SITE_NAME[locale],
       locale: locale === "ar" ? "ar_SA" : "en_US",
       type: "website",
+      ...(ogImage ? { images: ogImage } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      ...(ogImage ? { images: ogImage.map((i) => i.url) } : {}),
     },
   };
 }

@@ -18,7 +18,13 @@ const DESCRIPTION = {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const l = locale as Locale;
-  return buildMetadata({ locale: l, path: "/trip-budget-calculator", title: TITLE[l], description: DESCRIPTION[l] });
+  return buildMetadata({
+    locale: l,
+    path: "/trip-budget-calculator",
+    title: TITLE[l],
+    description: DESCRIPTION[l],
+    ogImageQuery: "travelers=2&days=5&flights=1000&accommodation=300&food=100&transport=200&activities=150&shopping=100&buffer=10",
+  });
 }
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {

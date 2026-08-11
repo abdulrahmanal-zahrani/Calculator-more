@@ -7,6 +7,7 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Tabs from "@/components/ui/Tabs";
 import ResultCard from "@/components/ui/ResultCard";
+import AffiliatePanel from "@/components/ui/AffiliatePanel";
 import { calculateGoldValue, type Karat } from "@/lib/calculators/gold";
 import { SAUDI_VAT_RATE, VAT_SOURCE_NOTE } from "@/lib/config/vat";
 import { formatCurrency } from "@/lib/format";
@@ -120,6 +121,7 @@ export default function GoldCalculatorClient({ locale }: { locale: Locale }) {
       : "";
 
   return (
+    <>
     <CalculatorShell
       locale={locale}
       meta={meta}
@@ -239,5 +241,11 @@ export default function GoldCalculatorClient({ locale }: { locale: Locale }) {
       faq={c.faq}
       disclaimer={c.disclaimer}
     />
+    {/* Demonstrates the affiliate seam (lib/affiliate.ts) — renders null
+        today since no real jewelers/partners are wired up yet. */}
+    <div className="mx-auto max-w-4xl px-4 sm:px-6">
+      <AffiliatePanel category="gold" locale={locale} title={locale === "ar" ? "منتجات ذات صلة" : "Related products"} />
+    </div>
+    </>
   );
 }

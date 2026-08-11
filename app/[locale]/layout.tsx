@@ -6,6 +6,7 @@ import { Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { locales, type Locale } from "@/i18n";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import AdSlot from "@/components/ui/AdSlot";
 import "../globals.css";
 
 const inter = Inter({
@@ -61,6 +62,13 @@ export default async function LocaleLayout({
       <body className="flex min-h-full flex-col bg-bg text-text">
         <NextIntlClientProvider messages={messages}>
           <SiteHeader locale={locale as Locale} />
+          {/* Top banner ad — one per page, above all content. Ads elsewhere
+              (in-content, bottom) live in CalculatorShell; this is the only
+              slot allowed above the fold, and it never sits above a
+              calculator's inputs/result since it's outside the page body. */}
+          <div className="mx-auto max-w-4xl px-4 pt-4 sm:px-6">
+            <AdSlot variant="inline" label="Advertisement" />
+          </div>
           <main className="flex-1">{children}</main>
           <SiteFooter locale={locale as Locale} />
         </NextIntlClientProvider>

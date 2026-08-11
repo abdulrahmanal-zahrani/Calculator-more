@@ -18,7 +18,13 @@ const DESCRIPTION = {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const l = locale as Locale;
-  return buildMetadata({ locale: l, path: "/v60-calculator", title: TITLE[l], description: DESCRIPTION[l] });
+  return buildMetadata({
+    locale: l,
+    path: "/v60-calculator",
+    title: TITLE[l],
+    description: DESCRIPTION[l],
+    ogImageQuery: "coffee=20&preset=balanced",
+  });
 }
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {

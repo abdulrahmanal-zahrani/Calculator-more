@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, forwardRef } from "react";
+import { InputHTMLAttributes, forwardRef, useId } from "react";
 import clsx from "@/lib/clsx";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,17 +9,22 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, suffix, error, className, id, ...props }, ref) => {
+    // Every call site passes `label` without an explicit `id` — generate a
+    // stable one so <label htmlFor> always associates with its input
+    // (required for screen readers / clicking the label to focus).
+    const generatedId = useId();
+    const inputId = id ?? generatedId;
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={id} className="text-sm font-medium text-text-muted">
+          <label htmlFor={inputId} className="text-sm font-medium text-text-muted">
             {label}
           </label>
         )}
         <div className="relative flex items-center">
           <input
             ref={ref}
-            id={id}
+            id={inputId}
             className={clsx(
               "w-full rounded-[var(--radius-md)] border border-border bg-bg-elevated px-3.5 py-2.5 text-text tabular-nums outline-none transition-colors placeholder:text-text-faint focus:border-accent",
               suffix && "pe-14",

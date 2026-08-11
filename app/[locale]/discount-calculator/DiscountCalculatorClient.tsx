@@ -7,7 +7,7 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import ResultCard from "@/components/ui/ResultCard";
 import { calculateDiscount } from "@/lib/calculators/discount";
-import { formatCurrency, formatNumber } from "@/lib/format";
+import { formatCurrency, formatPercent } from "@/lib/format";
 import { FLAGSHIP_CALCULATORS } from "@/lib/calculatorRegistry";
 import type { Locale } from "@/i18n";
 
@@ -178,7 +178,7 @@ export default function DiscountCalculatorClient({ locale }: { locale: Locale })
             </div>
             <div className="rounded-[var(--radius-md)] bg-bg-subtle p-3">
               <dt className="text-text-faint">{c.effective}</dt>
-              <dd className="mt-1 font-semibold tabular-nums text-text">{formatNumber(result.effectiveDiscountPercent, locale)}%</dd>
+              <dd className="mt-1 font-semibold tabular-nums text-text">{formatPercent(result.effectiveDiscountPercent, locale)}</dd>
             </div>
           </dl>
           {result.breakdown.length > 1 && (

@@ -81,6 +81,8 @@ export default function CalculatorShell({
         />
       </div>
 
+      {/* In-content ad: after the primary result/breakdown and share bar,
+          never above them and never inside the input form. */}
       <div className="mt-10">
         <AdSlot variant="inline" label="Advertisement" />
       </div>
@@ -116,6 +118,14 @@ export default function CalculatorShell({
           </div>
         </section>
       )}
+
+      {/* Lower-page ad: below related calculators, above the disclaimer —
+          the "bottom" slot called for in the brief. With the top banner in
+          the layout, this keeps every page to exactly 2 (mobile) or 3
+          (with layout banner) ad slots — never intrusive, never stacked. */}
+      <div className="mt-10">
+        <AdSlot variant="inline" label="Advertisement" />
+      </div>
 
       <section className="mt-10">
         <Alert title={t.disclaimer}>{disclaimer}</Alert>
