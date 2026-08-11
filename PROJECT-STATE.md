@@ -2,6 +2,54 @@
 
 _Last updated: 2026-08-11_
 
+## Latest pass (this session)
+
+- **Salary calculator — GOSI system selector**: added
+  `lib/config/gosiRules.ts` with two named, dated config objects for
+  Saudi GOSI social-insurance contribution rates — `GOSI_LEGACY_SYSTEM`
+  (flat ~9% employee / ~9% employer annuities on basic+housing, capped
+  at a wage ceiling) and `GOSI_NEW_SYSTEM` (the restructured system
+  phased in gradually from July 2022 through 2024/2025, using ~11%
+  employee / ~11.75% employer annuities as a full-phase-in reference
+  point), both plus a 0.75%/0.75% SANED unemployment-insurance
+  component. **These rates are example/reference figures compiled from
+  public commentary, not a live GOSI feed** — the UI shows a prominent
+  note ("تحقق من النسبة الحالية من موقع التأمينات الاجتماعية (GOSI)")
+  and the config file docstring says the same; treat them as a
+  reasonable starting point, not ground truth, and update
+  `lib/config/gosiRules.ts` (a one-line change per rate) once real
+  current figures are confirmed. `calculateSalary()` now takes
+  `system: "new" | "legacy"` and `includeGosi: boolean`, computing
+  employee/employer contributions capped at the wage ceiling; extended
+  Vitest coverage for both systems plus the wage-ceiling cap. UI: kept
+  the default form simple (basic/housing/other allowances/other
+  deductions) and put the GOSI system selector + include-toggle inside
+  a collapsible "إعدادات متقدمة" `<details>` section, matching the
+  pattern already used on the V60 calculator's advanced options.
+- **Scroll-reset investigation**: reviewed every `router.push`/
+  `router.replace` call across calculator client components and
+  `CalculatorShell` — all `{ scroll: false }` usages are query-string
+  syncs for in-page input changes (correct, intentional), and no
+  cross-page `<Link>` anywhere sets `scroll={false}` or otherwise
+  fights Next.js's default scroll-to-top on navigation. No custom
+  scroll-restoration logic exists. Conclusion: **there was no real
+  scroll-reset bug** — default Next.js App Router behavior was already
+  correct. The one real gap found was accessibility, not scroll: focus
+  wasn't moved to the new page's heading for keyboard/screen-reader
+  users on calculator-to-calculator navigation. Fixed by adding a ref +
+  `useEffect` keyed on the calculator slug in `CalculatorShell` that
+  focuses the `<h1 tabIndex={-1}>` on mount.
+- **Arabic content audit**: normalized 72 instances across
+  `messages/ar.json`, `lib/legalContent.ts`, and calculator client
+  components where the tanween-fatha diacritic was Unicode-ordered
+  before the trailing alef (`consonant + ً + ا`, e.g. "جدًا") instead
+  of after it (`consonant + ا + ً`, e.g. "جداً") — the correct
+  alef+tanween form. Read through calculator descriptions, "how it
+  works" sections, FAQs, and disclaimers for generic AI-translated
+  filler; the existing copy already reads naturally and concisely, so
+  no substantive rewriting was done beyond the tanween fix — being
+  honest that this item ended up smaller in scope than the other two.
+
 ## What this is
 
 المِحساب / MIHSAB is a bilingual (Arabic RTL / English) consumer calculator
