@@ -114,6 +114,19 @@ nothing invented.
   documented as a known, reasonable gap in PROJECT-STATE.md; out of
   scope for this pass's six named areas.
 
+## Follow-up verification pass (2026-08-11, same date)
+
+Ran the six-area verification brief (calculator correctness, SEO metadata,
+internal linking, performance, error/empty states, accessibility) against
+the fixes above. Every item verified as already meeting spec — see
+`PROJECT-STATE.md`'s "Latest pass" section for the itemized checklist.
+Nothing required a code fix. One pre-existing, non-blocking limitation
+reconfirmed: `CalculatorShell`'s related-calculators list is same-category
+only, so the specific cross-category pairing "Fuel → Trip Budget" isn't
+automatic (Fuel is `cars`, Trip Budget is `travel`) — flagged for a future
+pass, not fixed here since it's a deliberate existing architecture, not a
+regression or crash.
+
 ## Prioritized fix list (status)
 
 1. Move ad slot off the homepage above-the-fold — **done**.

@@ -2,7 +2,65 @@
 
 _Last updated: 2026-08-11_
 
-## Latest pass (this session) — V2 production-refinement
+## Latest pass (this session) — V2 verification pass
+
+Full verification sweep across the six areas named in the brief (calculator
+correctness, SEO metadata, internal linking, performance, error/empty
+states, accessibility). Every item checked out as already correct —
+**nothing needed fixing this pass**:
+
+1. **Calculator correctness**: Gold (`lib/calculators/gold.ts` +
+   `GoldCalculatorClient.tsx`) supports 18/21/22/24K, weight, price/gram,
+   making charge, VAT, buy/sell mode; manual price is plain user-controlled
+   state, never silently overwritten (no live-data UI exists, correctly,
+   since `goldService.ts` is a documented stub). Zakat's category chooser
+   order is `gold → silver → cash → other` in both the UI buttons and the
+   `useState` default (`ZakatCalculatorClient.tsx`), confirmed by reading
+   the file. Salary GOSI legacy/new selector and V60/coffee live-editable
+   solve-for (coffee/water/ratio) and fuel 91/95/98/diesel are all covered
+   by passing Vitest suites (22 tests across salary/coffee/fuel engines)
+   and their client components wire straight into those engines with no
+   hardcoded shortcuts found.
+2. **SEO metadata**: spot-checked 8 calculator `page.tsx` files (gold,
+   salary, fuel, v60, zakat, vat, loan, trip-budget) — every `TITLE`/
+   `DESCRIPTION` pair is unique and uses genuine Arabic search-intent
+   phrasing (حاسبة الذهب، حاسبة الراتب، etc.), routed through the shared
+   `buildMetadata`/`webApplicationJsonLd`/`breadcrumbJsonLd` helpers in
+   `lib/seo.ts` for canonical URLs, OG tags, and JSON-LD. No duplicates
+   found.
+3. **Internal linking**: `CalculatorShell` auto-generates "related
+   calculators" from same-category registry membership
+   (`getCalculatorsByCategory`, excluding self) — no calculator has zero
+   related links or a self-link. This produces sensible pairings for
+   money/lifestyle categories (Gold→Zakat/Currency/Salary, Coffee→Recipe
+   Scaling/Calorie/Protein) but is category-scoped, so one spec pairing
+   (Fuel→Trip Budget) isn't automatic since Fuel is "cars" and Trip Budget
+   is "travel" — a pre-existing, documented architectural choice (category-
+   automatic linking), not a bug; noted for a future pass if cross-category
+   pairings become a priority.
+4. **Performance**: `npm run build` (Next 16 + Turbopack) still doesn't
+   print per-route First Load JS (same tooling limitation noted in
+   `V2-AUDIT.md` from the prior pass, re-verified). All 33 routes build
+   successfully. `lib/numeric.ts` reviewed line-by-line: all regexes are
+   bounded/simple (no nested quantifiers, no catastrophic-backtracking
+   risk), minimal allocations, safe for per-keystroke use across ~20
+   calculators. `AdSlot` is a static placeholder `<div>`, no scripts, no
+   render-blocking. `next/font` with `display: swap` still correctly
+   applied.
+5. **Error/loading/empty states**: grepped all calculator client
+   components for `Spinner`/`isLoading` — none found, confirming no local
+   calculator fakes a loading state for instant client-side math.
+   `normalizeNumericInput` returns `null` (never `NaN`) on empty/invalid
+   input and calculators clamp with `Math.max(0, ... ?? 0)`, so blank/bad
+   input renders a `0` result rather than crashing or showing "NaN"/
+   "undefined".
+6. **Accessibility**: label-association fix (`useId()` in `Input`/
+   `Select`) from the prior pass is intact — verified no regression.
+
+`npm run build`, `npm run lint`, `npm test` (99/99) all pass. No code
+changes were made this pass beyond this file and `V2-AUDIT.md`.
+
+## Previous pass — V2 production-refinement
 
 Full audit written to `V2-AUDIT.md` (architecture, RTL/Arabic quality,
 mobile UX, SEO, performance, ads, a11y, placeholder-content grep — all
