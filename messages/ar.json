@@ -13,7 +13,7 @@
   },
   "home": {
     "searchPlaceholder": "وش تبي تحسب؟",
-    "popularTitle": "الحاسبات الأكثر استخدامًا",
+    "popularTitle": "الحاسبات الأكثر استخداماً",
     "categoriesTitle": "التصنيفات",
     "whyTitle": "ليش المِحساب؟",
     "why1Title": "دقيق وموثوق",
@@ -35,7 +35,7 @@
     "share": "مشاركة",
     "copyLink": "نسخ الرابط",
     "copied": "تم النسخ",
-    "comingSoon": "قريبًا"
+    "comingSoon": "قريباً"
   },
   "footer": {
     "rights": "جميع الحقوق محفوظة",

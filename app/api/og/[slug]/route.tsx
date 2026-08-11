@@ -127,7 +127,7 @@ function buildData(slug: string, locale: Locale, sp: URLSearchParams): OgData | 
         primary: money(r.monthlyCost),
         breakdown: [
           { label: locale === "ar" ? "لكل رحلة" : "Per trip", value: money(r.tripCost) },
-          { label: locale === "ar" ? "سنويًا" : "Annual", value: money(r.annualCost) },
+          { label: locale === "ar" ? "سنوياً" : "Annual", value: money(r.annualCost) },
           { label: locale === "ar" ? "لترات" : "Liters", value: plain(r.litersConsumed, "L") },
         ],
       };

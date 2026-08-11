@@ -45,8 +45,8 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
     faqJsonLd(
       l === "ar"
         ? [
-            { question: "هل السعر محدث تلقائيًا؟", answer: "لا، هذه الحاسبة تعتمد على إدخال يدوي للسعر حاليًا." },
-            { question: "لماذا يختلف السعر بين الشراء والبيع؟", answer: "عند البيع غالبًا لا تُسترد أجور الصنعة." },
+            { question: "هل السعر محدث تلقائياً؟", answer: "لا، هذه الحاسبة تعتمد على إدخال يدوي للسعر حالياً." },
+            { question: "لماذا يختلف السعر بين الشراء والبيع؟", answer: "عند البيع غالباً لا تُسترد أجور الصنعة." },
           ]
         : [
             { question: "Is the price updated automatically?", answer: "No — this calculator relies on manual entry." },

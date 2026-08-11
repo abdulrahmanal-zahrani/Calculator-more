@@ -41,7 +41,7 @@ const COPY = {
     ],
     disclaimer: "هذه الحاسبة لأغراض تقديرية فقط وليست عرض تمويل رسمي من أي جهة.",
     faq: [
-      { question: "هل تشمل الحاسبة رسوم التأمين؟", answer: "لا، أضف أي رسوم إضافية يدويًا في حقل الرسوم." },
+      { question: "هل تشمل الحاسبة رسوم التأمين؟", answer: "لا، أضف أي رسوم إضافية يدوياً في حقل الرسوم." },
     ],
   },
   en: {
@@ -236,7 +236,7 @@ export default function LoanCalculatorClient({ locale }: { locale: Locale }) {
             {result.amortization.length > 12 && (
               <p className="border-t border-border px-3 py-2 text-xs text-text-faint">
                 {locale === "ar"
-                  ? `عرض أول 12 شهرًا من أصل ${result.amortization.length}.`
+                  ? `عرض أول 12 شهراً من أصل ${result.amortization.length}.`
                   : `Showing first 12 of ${result.amortization.length} months.`}
               </p>
             )}
