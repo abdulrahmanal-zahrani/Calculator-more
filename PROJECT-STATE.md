@@ -159,6 +159,45 @@ architecture, and a full production-readiness audit.
   `lang`/`dir` attributes, computed WCAG contrast ratios, and manual code
   review.
 
+## This pass: three targeted fixes
+
+- **Coffee Ratio + V60 merged into one calculator** at `/v60-calculator`
+  ("حاسبة القهوة / V60" / "Coffee / V60 Calculator") — the old
+  `coffee-ratio-calculator` route is deleted and 308-redirected to
+  `/v60-calculator` (and `/ar/...`, `/en/...`) via `redirects()` in
+  `next.config.ts`. New engine `lib/calculators/coffeeRecipe.ts`
+  (`calculateCoffeeRecipe`) replaces both `lib/calculators/v60.ts` and
+  `lib/calculators/coffeeRatio.ts` (deleted), covering solve-for-water /
+  solve-for-coffee / solve-for-ratio for any brew method (V60, French
+  Press, AeroPress, Chemex, Cold Brew, Custom), each with its own default
+  starting ratio — never locked, any of the three fields (coffee grams,
+  water grams, ratio) is directly editable and live-recalculates the
+  other two. Light/Balanced/Strong/Custom presets kept as starting values
+  only. V60-specific grind/water-temp guidance, bloom water/time, and pour
+  schedule kept in a collapsed `<details>` "خيارات متقدمة" / "Advanced
+  options" section. `lib/calculatorRegistry.ts`, `lib/searchIndex.ts`, and
+  the OG image route (`app/api/og/[slug]/route.tsx`) updated to the
+  merged engine/copy; category/homepage listings are registry-driven so
+  no other hardcoded references existed. Tests merged into
+  `lib/calculators/__tests__/coffeeRecipe.test.ts` (old v60/coffeeRatio
+  test files deleted, no coverage lost).
+- **Zakat calculator IA fix**: `app/[locale]/zakat-calculator/ZakatCalculatorClient.tsx`
+  now leads with a category chooser (ذهب / فضة / نقد / أصول أخرى — Gold
+  and Silver first) that shows only the relevant input fields per
+  category; liabilities and the nisab-basis toggle stay visible
+  underneath since they apply across categories. The calculation engine
+  (`lib/calculators/zakat.ts`) already fully supported gold, silver,
+  cash, investments, inventory, and receivables with a proper silver
+  nisab (595g) path — no engine changes were needed, this was purely an
+  information-architecture reorder.
+- **Fuel Cost Calculator**: added a third petrol octane option, 98, to
+  `lib/config/fuelPrices.ts` (`gasoline98`, indicative example price,
+  same disclaimer pattern as 91/95). The fuel-type `<Select>` in
+  `FuelCalculatorClient.tsx` maps over `FUEL_LABELS` so it picked up the
+  new option automatically; switching fuel type already reactively
+  updates the price field and result (verified, no code change needed
+  there).
+
 ## Rebrand: Hesabi → المِحساب (MIHSAB)
 
 Full brand rename is complete: all copy (messages/*.json, `lib/seo.ts`,
