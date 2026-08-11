@@ -6,7 +6,6 @@ import CalculatorShell from "@/components/calculator/CalculatorShell";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Tabs from "@/components/ui/Tabs";
-import Button from "@/components/ui/Button";
 import ResultCard from "@/components/ui/ResultCard";
 import { calculateGoldValue, type Karat } from "@/lib/calculators/gold";
 import { SAUDI_VAT_RATE, VAT_SOURCE_NOTE } from "@/lib/config/vat";
