@@ -3,16 +3,16 @@ import { Suspense } from "react";
 import type { Locale } from "@/i18n";
 import { locales } from "@/i18n";
 import { buildMetadata, webApplicationJsonLd, breadcrumbJsonLd } from "@/lib/seo";
-import DiscountCalculatorClient from "./DiscountCalculatorClient";
+import BonusCalculatorClient from "./BonusCalculatorClient";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-const TITLE = { ar: "حاسبة الخصم", en: "Discount Calculator" };
+const TITLE = { ar: "حاسبة البونص السنوي", en: "Annual Bonus Calculator" };
 const DESCRIPTION = {
-  ar: "احسب السعر النهائي والتوفير مع دعم الخصومات المتراكمة.",
-  en: "Work out the final price and savings, including stacked discounts.",
+  ar: "احسب مكافأة نهاية السنة (البونص) حسب تقييم الأداء ونظام شركتك — بدون افتراض معادلة موحدة.",
+  en: "Calculate your annual (end-of-year) bonus based on your performance rating and your company's own system.",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -20,10 +20,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const l = locale as Locale;
   return buildMetadata({
     locale: l,
-    path: "/discount-calculator",
+    path: "/bonus-calculator",
     title: TITLE[l],
     description: DESCRIPTION[l],
-    ogImageQuery: "original=500&discounts=20",
   });
 }
 
@@ -31,11 +30,11 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const { locale } = await params;
   const l = locale as Locale;
   const jsonLd = [
-    webApplicationJsonLd({ locale: l, name: TITLE[l], description: DESCRIPTION[l], path: "/discount-calculator" }),
+    webApplicationJsonLd({ locale: l, name: TITLE[l], description: DESCRIPTION[l], path: "/bonus-calculator" }),
     breadcrumbJsonLd(l, [
       { name: l === "ar" ? "الرئيسية" : "Home", path: "" },
       { name: l === "ar" ? "الفلوس" : "Money", path: "/money" },
-      { name: TITLE[l], path: "/discount-calculator" },
+      { name: TITLE[l], path: "/bonus-calculator" },
     ]),
   ];
   return (
@@ -44,7 +43,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       ))}
       <Suspense>
-        <DiscountCalculatorClient locale={l} />
+        <BonusCalculatorClient locale={l} />
       </Suspense>
     </>
   );

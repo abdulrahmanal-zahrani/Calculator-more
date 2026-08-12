@@ -2,7 +2,202 @@
 
 _Last updated: 2026-08-11_
 
-## Latest pass (this session)
+## Latest pass (this session) — Annual Bonus Calculator
+
+Added a new calculator, **حاسبة البونص السنوي / Annual Bonus Calculator**,
+at `/bonus-calculator` (category الفلوس/Money — 22nd calculator). Deliberately
+does NOT assume "salary × bonus %": the model is Performance Rating →
+company-specific Bonus Multiplier (via a matrix the employee defines) →
+applied to a Target Bonus (% of salary / number-of-salaries / fixed amount)
+→ optionally prorated for partial-year eligibility.
+
+- **Engine** (`lib/calculators/bonus.ts`, `calculateBonus()`): resolves
+  annual base salary (monthly-or-annual auto-convert), target bonus amount
+  (3 methods), a performance multiplier from a rating→multiplier matrix
+  (bracket/floor-to-nearest-defined-threshold-at-or-below by default, or
+  linear interpolation between neighboring rows when enabled — the choice
+  is documented in a code comment and surfaced in the UI's "كيف حسبناها؟"
+  section), times optional secondary factors (company/department/extra,
+  each defaulting to 100% i.e. no-op), times a proration factor
+  (full year / months / custom %). Returns a structured breakdown
+  (`annualBaseSalary`, `targetBonusAmount`, `performanceMultiplier`,
+  `prorationFactor`, `estimatedBonus`, `totalAnnualCompensation`,
+  `monthlyEquivalent`). Validates and throws on: negative salary, rating
+  outside the selected scale, duplicate matrix rating thresholds, negative
+  multipliers. `dedupeAndSortMatrix()` exported for UI-side dedup. All
+  parsing goes through `lib/numeric.ts`; all rounding via the same
+  round-to-2-decimals convention as `salary.ts`/`gold.ts`.
+- **Tests** (`lib/calculators/__tests__/bonus.test.ts`, 12 tests, all
+  passing): the 7 spec cases plus 4 validation edge cases plus a
+  matrix-dedup unit test. Computed results: (1) 120,000 salary/15%
+  target/rating 4-of-5 → 18,000 SAR exactly. (2) rating 4.2-of-5
+  interpolated between 4→100%/5→150% → multiplier 1.10 exactly, bonus
+  19,800 SAR exactly. (3) 10-point scale, rating 8/10 on a custom matrix
+  → multiplier 1.0, bonus 10,000 SAR. (4) 100-point scale, rating 85/100
+  → floor-bracket resolves to the 80-threshold row's 100% multiplier,
+  bonus 10,000 SAR. (5) number-of-salaries: 10,000 monthly × 1.5 salaries
+  × 100% → 15,000 SAR exactly. (6) partial year: 24,000 fixed target ×
+  100% × 6/12 months → 12,000 SAR exactly. (7) Arabic numerals
+  "١٢٠٠٠٠"/"٤٫٢" parse via `normalizeNumericInput` to 120000/4.2 and
+  reproduce case 2's 19,800 SAR result.
+- **UI** (`app/[locale]/bonus-calculator/{page.tsx,BonusCalculatorClient.tsx}`):
+  simple mode by default (salary+period, rating-scale preset, rating,
+  target-bonus method) using an automatic linear 2-point matrix
+  (min→0%, max→100%, interpolated) so simple mode needs no matrix editing.
+  Advanced mode is a collapsible `<details>` ("تفاصيل نظام شركتك", same
+  pattern as V60's advanced options) containing: a custom-scale min/max
+  toggle, an add/remove bonus-matrix row builder (seeded with an editable
+  1→0%/2→50%/3→75%/4→100%/5→150%-equivalent example scaled to the chosen
+  rating range) with a "use custom matrix" checkbox and interpolation
+  toggle, optional company/department/extra factor inputs, and a
+  full-year/months/custom-% proration selector. Result-first layout via
+  `ResultCard` + breakdown `<dl>` + an expandable "كيف حسبناها؟" showing
+  the substituted formula. Local preset save/load ("نظام شركتي") via a
+  new `lib/bonusPresets.ts`, mirroring `lib/trending.ts`'s guarded
+  `typeof window` + try/catch localStorage pattern — only the company's
+  calculation structure (matrix, target method, factors, scale) persists,
+  never the employee's salary or rating. Share via the existing
+  `ShareBar`/`CalculatorShell` — `CalculatorShell` gained an optional
+  `shareTitle` prop (defaults to the calculator name, as before) so this
+  calculator can pass a custom top-line-numbers-only share summary
+  without a company-identifying matrix. Scalar inputs (salary, period,
+  rating scale, rating, target-bonus method/value) sync to the URL query
+  string like the scalar-input calculators; the bonus matrix itself is
+  kept in-memory-only, consistent with the existing documented gap for
+  list-based calculator forms (Insurance/Maintenance/Recipe/Luggage).
+- **Salary ↔ Bonus integration**: Salary calculator gained a "احسب
+  البونص" link passing its computed annual gross salary as
+  `?annualSalary=`; the bonus calculator reads that param on mount to
+  prefill salary (annual mode) when no `salary` param is already present.
+  Bonus calculator has a reciprocal "احسب راتبك" link back to
+  `/salary-calculator`. No other change to the salary calculator's logic.
+- **Registry/SEO/search**: added to `lib/calculatorRegistry.ts`
+  (`bonus-calculator`, category `money`) and `lib/searchIndex.ts`
+  (بونص/bonus/مكافأة/تقييم أداء/performance rating keywords) — related
+  calculators and category-page listing are automatic via the existing
+  registry-driven mechanisms (`CalculatorShell`'s same-category related
+  links, `getCalculatorsByCategory`), no extra wiring needed. SEO via
+  `buildMetadata`/`webApplicationJsonLd`/`breadcrumbJsonLd` in
+  `lib/seo.ts`, matching every other calculator page exactly. No OG image
+  variant added (matches the existing "15 of 21 calculators have no OG
+  image" gap, not one of the 6 flagship OG calculators).
+- **i18n**: per existing convention (confirmed by inspection —
+  `messages/ar.json`/`messages/en.json` hold only site-wide nav/home
+  strings; all 21 existing calculators keep their copy in a local `COPY`
+  object inside their client component, not in the messages files), the
+  bonus calculator's strings live in `BonusCalculatorClient.tsx`'s own
+  `COPY` object, matching every other calculator rather than the literal
+  (but not actually-followed-anywhere) messages-file convention described
+  in the original brief.
+- `npm run build`, `npm run lint`, `npm test` (111/111) all pass. Smoke
+  tested `/ar/bonus-calculator` and `/en/bonus-calculator` via
+  `next start` + curl: both return 200, `dir="rtl"`/`dir="ltr"` correct.
+
+## Previous pass — V2 verification pass
+
+Full verification sweep across the six areas named in the brief (calculator
+correctness, SEO metadata, internal linking, performance, error/empty
+states, accessibility). Every item checked out as already correct —
+**nothing needed fixing this pass**:
+
+1. **Calculator correctness**: Gold (`lib/calculators/gold.ts` +
+   `GoldCalculatorClient.tsx`) supports 18/21/22/24K, weight, price/gram,
+   making charge, VAT, buy/sell mode; manual price is plain user-controlled
+   state, never silently overwritten (no live-data UI exists, correctly,
+   since `goldService.ts` is a documented stub). Zakat's category chooser
+   order is `gold → silver → cash → other` in both the UI buttons and the
+   `useState` default (`ZakatCalculatorClient.tsx`), confirmed by reading
+   the file. Salary GOSI legacy/new selector and V60/coffee live-editable
+   solve-for (coffee/water/ratio) and fuel 91/95/98/diesel are all covered
+   by passing Vitest suites (22 tests across salary/coffee/fuel engines)
+   and their client components wire straight into those engines with no
+   hardcoded shortcuts found.
+2. **SEO metadata**: spot-checked 8 calculator `page.tsx` files (gold,
+   salary, fuel, v60, zakat, vat, loan, trip-budget) — every `TITLE`/
+   `DESCRIPTION` pair is unique and uses genuine Arabic search-intent
+   phrasing (حاسبة الذهب، حاسبة الراتب، etc.), routed through the shared
+   `buildMetadata`/`webApplicationJsonLd`/`breadcrumbJsonLd` helpers in
+   `lib/seo.ts` for canonical URLs, OG tags, and JSON-LD. No duplicates
+   found.
+3. **Internal linking**: `CalculatorShell` auto-generates "related
+   calculators" from same-category registry membership
+   (`getCalculatorsByCategory`, excluding self) — no calculator has zero
+   related links or a self-link. This produces sensible pairings for
+   money/lifestyle categories (Gold→Zakat/Currency/Salary, Coffee→Recipe
+   Scaling/Calorie/Protein) but is category-scoped, so one spec pairing
+   (Fuel→Trip Budget) isn't automatic since Fuel is "cars" and Trip Budget
+   is "travel" — a pre-existing, documented architectural choice (category-
+   automatic linking), not a bug; noted for a future pass if cross-category
+   pairings become a priority.
+4. **Performance**: `npm run build` (Next 16 + Turbopack) still doesn't
+   print per-route First Load JS (same tooling limitation noted in
+   `V2-AUDIT.md` from the prior pass, re-verified). All 33 routes build
+   successfully. `lib/numeric.ts` reviewed line-by-line: all regexes are
+   bounded/simple (no nested quantifiers, no catastrophic-backtracking
+   risk), minimal allocations, safe for per-keystroke use across ~20
+   calculators. `AdSlot` is a static placeholder `<div>`, no scripts, no
+   render-blocking. `next/font` with `display: swap` still correctly
+   applied.
+5. **Error/loading/empty states**: grepped all calculator client
+   components for `Spinner`/`isLoading` — none found, confirming no local
+   calculator fakes a loading state for instant client-side math.
+   `normalizeNumericInput` returns `null` (never `NaN`) on empty/invalid
+   input and calculators clamp with `Math.max(0, ... ?? 0)`, so blank/bad
+   input renders a `0` result rather than crashing or showing "NaN"/
+   "undefined".
+6. **Accessibility**: label-association fix (`useId()` in `Input`/
+   `Select`) from the prior pass is intact — verified no regression.
+
+`npm run build`, `npm run lint`, `npm test` (99/99) all pass. No code
+changes were made this pass beyond this file and `V2-AUDIT.md`.
+
+## Previous pass — V2 production-refinement
+
+Full audit written to `V2-AUDIT.md` (architecture, RTL/Arabic quality,
+mobile UX, SEO, performance, ads, a11y, placeholder-content grep — all
+evidence-based, no invented metrics). Six fixes implemented from the
+audit's findings:
+
+- **Homepage hero restructured**: brand → one-line value proposition →
+  "وش تبي تحسب؟" heading → `SearchBox` (reused, not rebuilt) → seven
+  shortcut chips linking straight to gold/salary/fuel/coffee/loan/
+  zakat/trip calculators. Kept tight, no new components.
+- **AI-marketing-speak grep**: zero matches for the listed phrases (and
+  a broader pass beyond the listed set) across all copy — nothing to
+  rewrite; the prior tanween-audit pass's copy already holds up.
+- **"Why MIHSAB" section redesigned**: "كل شيء محسوب." lead-in + five
+  short benefit labels (fast / clear / no signup / Arabic-first / clear
+  sources) replacing the old 3-bullet generic-SaaS framing.
+- **Ad placement fixed**: removed the site-wide top-of-`<main>` ad slot
+  from `app/[locale]/layout.tsx` (it sat above the homepage fold). The
+  homepage now places its one ad after hero/search/popular-calculators;
+  calculator pages keep their existing two correctly-placed slots
+  (in-content after result, lower-page after related calculators) in
+  `CalculatorShell`, unchanged. `AdSlot` already reserved `min-height` —
+  verified, no fix needed there.
+- **Category taxonomy aligned to spec**: `lib/calculatorRegistry.ts`
+  `CATEGORIES` renamed "المال" → "الفلوس" and "نمط الحياة" →
+  "القهوة والأكل" (English: "Coffee & Food"); updated the same hardcoded
+  strings across 26 calculator page/client files that had copy-pasted
+  category breadcrumb text instead of reading the registry. Also
+  relabeled the homepage "most used" claim ("الأكثر استخداماً") to
+  "الأكثر طلباً" ("most requested") since the underlying list
+  (`lib/trending.ts`) is an honest hardcoded editorial ordering, not
+  measured usage data — the old label overclaimed.
+- **Placeholder cleanup**: grepped the whole repo for
+  `example.com`/`.example`/`lorem`/`test company`/`dummy`/fake emails —
+  only the intentional, consistent `mihsab.example` placeholder domain
+  and one already-documented TODO in `lib/trending.ts` remain; nothing
+  else to fix.
+- Caught and fixed a transient bug introduced by the category
+  find-and-replace: `"المالي(ة)"` (financial) matched the `"المال"`
+  substring and got corrupted to `"الفلوسي(ة)"` in
+  `financialDisclaimer` copy (`messages/ar.json`,
+  `lib/legalContent.ts`) — corrected back to `"المالية"`, verified with
+  a follow-up grep.
+- `npm run build`, `npm run lint`, `npm test` (99/99) all pass.
+
+## Previous pass
 
 - **Salary calculator — GOSI system selector**: added
   `lib/config/gosiRules.ts` with two named, dated config objects for

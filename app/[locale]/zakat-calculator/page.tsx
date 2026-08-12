@@ -11,7 +11,7 @@ export function generateStaticParams() {
 
 const TITLE = { ar: "حاسبة الزكاة", en: "Zakat Calculator" };
 const DESCRIPTION = {
-  ar: "احسب زكاة المال والذهب والفضة والاستثمارات وفق قواعد عامة.",
+  ar: "احسب زكاة الفلوس والذهب والفضة والاستثمارات وفق قواعد عامة.",
   en: "Calculate zakat on cash, gold, silver, and investments using general rules.",
 };
 
@@ -28,7 +28,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
     webApplicationJsonLd({ locale: l, name: TITLE[l], description: DESCRIPTION[l], path: "/zakat-calculator" }),
     breadcrumbJsonLd(l, [
       { name: l === "ar" ? "الرئيسية" : "Home", path: "" },
-      { name: l === "ar" ? "المال" : "Money", path: "/money" },
+      { name: l === "ar" ? "الفلوس" : "Money", path: "/money" },
       { name: TITLE[l], path: "/zakat-calculator" },
     ]),
   ];

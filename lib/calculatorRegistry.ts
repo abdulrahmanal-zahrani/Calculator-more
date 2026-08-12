@@ -95,7 +95,7 @@ export const FLAGSHIP_CALCULATORS: CalculatorMeta[] = [
     icon: "🕌",
     name: { ar: "حاسبة الزكاة", en: "Zakat Calculator" },
     description: {
-      ar: "احسب زكاة المال والذهب والفضة والاستثمارات وفق قواعد عامة.",
+      ar: "احسب زكاة الفلوس والذهب والفضة والاستثمارات وفق قواعد عامة.",
       en: "Calculate zakat on cash, gold, silver, and investments using general rules.",
     },
   },
@@ -107,6 +107,16 @@ export const FLAGSHIP_CALCULATORS: CalculatorMeta[] = [
     description: {
       ar: "أضف أو استخرج ضريبة القيمة المضافة بأي نسبة، بما في ذلك نسبة زاتكا 15%.",
       en: "Add or reverse-calculate VAT at any rate, including the 15% ZATCA rate.",
+    },
+  },
+  {
+    slug: "bonus-calculator",
+    category: "money",
+    icon: "🎯",
+    name: { ar: "حاسبة البونص السنوي", en: "Annual Bonus Calculator" },
+    description: {
+      ar: "أدخل طريقة حساب البونص في شركتك — التقييم، المعامل، والاستحقاق — واحسب البونص المتوقع.",
+      en: "Tell us how your company calculates bonuses — rating, multiplier, and eligibility — and get your estimated bonus.",
     },
   },
   {
@@ -214,7 +224,7 @@ export const FLAGSHIP_CALCULATORS: CalculatorMeta[] = [
 export const CATEGORIES: { slug: Category; name: { ar: string; en: string }; description: { ar: string; en: string } }[] = [
   {
     slug: "money",
-    name: { ar: "المال", en: "Money" },
+    name: { ar: "الفلوس", en: "Money" },
     description: { ar: "ذهب، رواتب، عملات، خصومات، وتمويل.", en: "Gold, salary, currency, discounts, and loans." },
   },
   {
@@ -224,7 +234,7 @@ export const CATEGORIES: { slug: Category; name: { ar: string; en: string }; des
   },
   {
     slug: "lifestyle",
-    name: { ar: "نمط الحياة", en: "Lifestyle" },
+    name: { ar: "القهوة والأكل", en: "Coffee & Food" },
     description: { ar: "قهوة، وصفات، وسعرات حرارية.", en: "Coffee, recipes, and calories." },
   },
   {

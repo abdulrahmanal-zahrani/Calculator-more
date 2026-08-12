@@ -37,7 +37,7 @@ const COPY = {
     scaleFactor: "معامل التحجيم",
     scaledQuantity: "الكمية الجديدة",
     home: "الرئيسية",
-    category: "نمط الحياة",
+    category: "القهوة والأكل",
     howItWorks: [
       "نحسب معامل التحجيم بقسمة عدد الحصص المطلوب على عدد الحصص الأصلي.",
       "نضرب كمية كل مكوّن في هذا المعامل للحصول على الكمية الجديدة.",
@@ -57,7 +57,7 @@ const COPY = {
     scaleFactor: "Scale factor",
     scaledQuantity: "Scaled quantity",
     home: "Home",
-    category: "Lifestyle",
+    category: "Coffee & Food",
     howItWorks: [
       "We compute the scale factor as desired servings divided by original servings.",
       "We multiply each ingredient's quantity by that factor to get the scaled quantity.",

@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
     webApplicationJsonLd({ locale: l, name: TITLE[l], description: DESCRIPTION[l], path: "/v60-calculator" }),
     breadcrumbJsonLd(l, [
       { name: l === "ar" ? "الرئيسية" : "Home", path: "" },
-      { name: l === "ar" ? "نمط الحياة" : "Lifestyle", path: "/lifestyle" },
+      { name: l === "ar" ? "القهوة والأكل" : "Coffee & Food", path: "/lifestyle" },
       { name: TITLE[l], path: "/v60-calculator" },
     ]),
   ];
